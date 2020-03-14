@@ -2,9 +2,9 @@
 > quickvo 是用于通过连接数据库读取表结构信息生产POJO对象的工具。
 
 # 使用说明
-* 1. 请参见trunk下面sqltoy-showcase 项目
-* 2. 进入tools\quickvo 目录
-* 3. 编写quickvo.xml 配置相关数据库和POJO任务信息
+* 1.请参见trunk下面sqltoy-showcase 项目
+* 2.进入tools\quickvo 目录
+* 3.编写quickvo.xml 配置相关数据库和POJO任务信息
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -21,7 +21,6 @@
 		driver="${jdbc.connection.driver_class}" catalog="${jdbc.connection.catalog}"
 		username="${jdbc.connection.username}"	password="${jdbc.connection.password}" />
 	<tasks dist="../../src/main/java" encoding="UTF-8">
-		<!-- 4.0.6之后增加datasource属性适应多数据库配置 -->
 		<task active="true" author="zhongxuchen" include="^SQLTOY_\w+" datasource="sqltoy">
 			<vo package="${project.package}.showcase.vo" substr="Sqltoy" name="#{subName}VO" />
 		</task>
