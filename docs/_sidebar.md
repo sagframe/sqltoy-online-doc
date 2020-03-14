@@ -12,5 +12,6 @@
   - [Elastic支持](sqltoy/elastic.md)
   - [特殊技巧](sqltoy/superpowers.md)
 - [关键问题解答](sqltoy/issues.md)
+- [RoadMap路线图](sqltoy/roadmap.md)
 - [Changelog变更历史](sqltoy/changelog.md)
  
