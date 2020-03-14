@@ -3,7 +3,7 @@
 
 # 使用说明
 * 1.请参见trunk下面sqltoy-showcase 项目
-* 2.进入tools\quickvo 目录
+* 2.进入tools\quickvo 目录,创建libs目录，将sagacity-quickvo-xx.jar 和数据库驱动放于其中。
 * 3.编写quickvo.xml 配置相关数据库和POJO任务信息
 
 ```xml
@@ -21,8 +21,10 @@
 		driver="${jdbc.connection.driver_class}" catalog="${jdbc.connection.catalog}"
 		username="${jdbc.connection.username}"	password="${jdbc.connection.password}" />
 	<tasks dist="../../src/main/java" encoding="UTF-8">
+		<!-- include 是基于正则表达式进行表名匹配的 -->	
 		<task active="true" author="zhongxuchen" include="^SQLTOY_\w+" datasource="sqltoy">
-			<vo package="${project.package}.showcase.vo" substr="Sqltoy" name="#{subName}VO" />
+		    <!-- name后面的VO可根据情况设定，也可直接为#{subName} -->
+		    <vo package="${project.package}.showcase.vo" substr="Sqltoy" name="#{subName}VO" />
 		</task>
 	</tasks>
 	<!-- 主键策略配置:
@@ -60,3 +62,11 @@
 	</type-mapping>
 </quickvo>
 ```
+
+* 4.编写quickvo.bat脚本
+```xml
+java -cp ./libs/* org.sagacity.quickvo.QuickVOStart quickvo.xml
+```
+* 5.执行quickvo.bat 则会自动生成VO对象并分别放于设置的包路径下面
+
+# 生成对象后，我们就可以开始基于对象的增删改查了！
