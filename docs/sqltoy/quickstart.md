@@ -1,4 +1,4 @@
-# 请参照sagacity-sqltoy/trunk/sqltoy-starter-showcase 项目
+# 请参照trunk下面sqltoy-starter-showcase 演示项目
 
 * 创建一个springboot的maven项目,并建立包路径,如:com.sagframe.sqltoy.showcase
 * 修改pom.xml,引入sqltoy boot starter、druid starter、数据库驱动、缓存、junit测试依赖等。
