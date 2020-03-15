@@ -68,7 +68,10 @@
 java -cp ./libs/* org.sagacity.quickvo.QuickVOStart quickvo.xml
 ```
 * 5.执行quickvo.bat 则会自动生成VO对象并分别放于设置的包路径下面
-* sqltoy 生成vo分成2部分:AbstractVO 和 VO,AbstractVO 不允许手工改动保持跟数据库一致，VO则可以自行扩展属性，比如:员工表需要展示机构名称
+
+** sqltoy 生成vo分成2部分:AbstractVO 和 VO,AbstractVO 不允许手工改动保持跟数据库一致，VO则可以自行扩展属性，比如:员工表需要展示机构名称
+
+* AbstractStaffInfoVO 跟数据库完全保持一致
 
 ```java
 package com.sagframe.sqltoy.showcase.vo.base;
@@ -122,6 +125,10 @@ public abstract class AbstractStaffInfoVO implements Serializable,
 	// 这里只截取了部分代码，后面部分省略
 }
 
+```
+
+* StaffInfoVO 继承抽象VO，可自行扩展属性
+```java
 @SqlToyEntity
 public class StaffInfoVO extends AbstractStaffInfoVO {	
 	/**
