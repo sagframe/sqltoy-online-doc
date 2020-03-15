@@ -62,12 +62,22 @@
 	</type-mapping>
 </quickvo>
 ```
+* 4.主键策略说明，实现类包名:org.sagacity.sqltoy.plugins.id.impl
 
-* 4.编写quickvo.bat脚本
+策略名称  | 长度    |类型| 对应实现类   |是否有序|策略说明 
+-------   | ------- |---|------       |-----|----
+default   | 22|全数字 |DefaultIdGenerator|有序|13位当前毫秒+6位纳秒+3位主机ID(IPv4或v6后3位)
+nanotime  | 26| 全数字 |NanoTimeIdGenerator|有序|yyMMddHHmmssSSS+6位纳秒+2位(线程Id+随机数)+3位主机ID
+snowflake | 16| 全数字 |SnowflakeIdGenerator|有序|16位雪花算法
+UUID | 32| 字母数字混合 |UUIDGenerator| 无序|32位通用UUID
+redis | 自定义| 自定义 |RedisIdGenerator|有序|利用redis进行分组key的计数，然后key+计数值，如6位日期200315和3位计数值012,组合成200315012
+
+
+* 5.编写quickvo.bat脚本
 ```xml
 java -cp ./libs/* org.sagacity.quickvo.QuickVOStart quickvo.xml
 ```
-* 5.执行quickvo.bat 则会自动生成VO对象并分别放于设置的包路径下面
+* 6.执行quickvo.bat 则会自动生成VO对象并分别放于设置的包路径下面
 
 ** sqltoy 生成vo分成2部分:AbstractVO 和 VO,AbstractVO 不允许手工改动保持跟数据库一致，VO则可以自行扩展属性，比如:员工表需要展示机构名称
 
