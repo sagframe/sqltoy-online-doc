@@ -100,6 +100,7 @@ disk-store-path|非必填|null| 缓存持久化到磁盘的文件存储路径,�
 default-heap| 非必填|10000| 一级内存堆的大小(条)，性能最高，单位:EntryUnit.ENTRIES 
 default-off-heap| 非必填|0| 二级内存堆的大小(依旧在内存中,但有一个持久化序列化操作影响一定性能)，单位:MB
 default-disk-size| 非必填|0| 三级持久化到硬盘存储上的大小(效率最低)，单位:MB
+default-keep-alive| 非必填|3600| 缓存默认有效时长位3600秒,有效时长必须大于0，如为零则表示永久有效
 
 * cache-translates 缓存的数据结构为:key、name、扩展属性1、扩展属性2模式，一般第一列为key,第二列为通过key转化的名称，例如：
 
@@ -123,6 +124,7 @@ sql| 非必填| 这里sql是指对应*.sql.xml 文件中定义的一个sql语句
 heap|非必填| 针对具体缓存指定一级堆栈大小,参见default-heap介绍
 off-heap|非必填|针对具体缓存指定二级堆栈大小，单位MB
 disk-size| 非必填|针对具体缓存指定三级持久化到硬盘存储上的大小(效率最低)，单位:MB
+keep-alive| 非必填|缓存默认有效时长位3600秒,有效时长必须大于0，如为零则表示永久有效
 
 > service-translate: 通过spring获取具体的bean方法来获取缓存,返回结果为二维度List
 
@@ -134,6 +136,7 @@ method | 必填| 对应service的方法,sqltoy会传递一个cacheType参数,用
 heap|非必填| 针对具体缓存指定一级堆栈大小,参见default-heap介绍
 off-heap|非必填|针对具体缓存指定二级堆栈大小，单位MB
 disk-size| 非必填|针对具体缓存指定三级持久化到硬盘存储上的大小(效率最低)，单位:MB
+keep-alive| 非必填|缓存默认有效时长位3600秒,有效时长必须大于0，如为零则表示永久有效
 
 > rest-translate: 通过http rest请求获取缓存,返回结果为二维度List
 
@@ -146,6 +149,7 @@ password | 非必填| 如需要身份认证提供认证信息
 heap|非必填| 针对具体缓存指定一级堆栈大小,参见default-heap介绍
 off-heap|非必填|针对具体缓存指定二级堆栈大小，单位MB
 disk-size| 非必填|针对具体缓存指定三级持久化到硬盘存储上的大小(效率最低)，单位:MB
+keep-alive| 非必填|缓存默认有效时长位3600秒,有效时长必须大于0，如为零则表示永久有效
 
 * cache-update-checkers 缓存更新检测,下面可以设置多种类型和多个缓存更新检测
 > 每次检测sqltoy传递的参数为:lastUpdateTime 缓存最后检测的时间
