@@ -68,5 +68,94 @@
 java -cp ./libs/* org.sagacity.quickvo.QuickVOStart quickvo.xml
 ```
 * 5.执行quickvo.bat 则会自动生成VO对象并分别放于设置的包路径下面
+* sqltoy 生成vo分成2部分:AbstractVO 和 VO,AbstractVO 不允许手工改动保持跟数据库一致，VO则可以自行扩展属性，比如:员工表需要展示机构名称
+
+```java
+package com.sagframe.sqltoy.showcase.vo.base;
+
+import java.io.Serializable;
+import org.sagacity.sqltoy.config.annotation.Entity;
+import org.sagacity.sqltoy.config.annotation.Id;
+import org.sagacity.sqltoy.config.annotation.Column;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+/**
+ * @project sqltoy-showcase
+ * @version 1.0.0
+ * Table: sqltoy_staff_info,Remark:员工信息表   
+ */
+@Entity(tableName="sqltoy_staff_info",pk_constraint="PRIMARY")
+public abstract class AbstractStaffInfoVO implements Serializable,
+	java.lang.Cloneable {
+
+	/**
+	 * 根据包路径+类名称计算生成
+	 */
+	private static final long serialVersionUID = 6555146524698728551L;
+	
+	/**
+	 * 员工ID
+	 */
+	@Id(strategy="generator",generator="org.sagacity.sqltoy.plugin.id.DefaultIdGenerator")
+	@Column(name="STAFF_ID",length=22L,type=java.sql.Types.VARCHAR,nullable=false)
+	protected String staffId;
+	
+	/**
+	 * 工号
+	 */
+	@Column(name="STAFF_CODE",length=22L,type=java.sql.Types.VARCHAR,nullable=false)
+	protected String staffCode;
+	
+	/**
+	 * 姓名
+	 */
+	@Column(name="STAFF_NAME",length=30L,type=java.sql.Types.VARCHAR,nullable=false)
+	protected String staffName;
+	
+	/**
+	 * 部门
+	 */
+	@Column(name="ORGAN_ID",length=22L,type=java.sql.Types.VARCHAR,nullable=false)
+	protected String organId;
+	
+	// 这里只截取了部分代码，后面部分省略
+}
+
+@SqlToyEntity
+public class StaffInfoVO extends AbstractStaffInfoVO {	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4609820466201465046L;
+	 
+	/** default constructor */
+	public StaffInfoVO() {
+		super();
+	}
+	
+	//自定义属性机构名称
+	/**
+	 * 员工所在机构名称
+	 */
+	private String organName;
+	
+	/**
+	 * @return the organName
+	 */
+	public String getOrganName() {
+		return organName;
+	}
+
+	/**
+	 * @param organName the organName to set
+	 */
+	public void setOrganName(String organName) {
+		this.organName = organName;
+	}
+
+	//下面部分省略，可提供开发者扩展属性定义
+}
+```
 
 # 生成对象后，我们就可以开始基于对象的增删改查了！
