@@ -3,31 +3,34 @@
   * 原始做法是表关联查询
   ```xml
   <sql id="sqltoy_query_order_info">
-		<value>
-			<![CDATA[
-			 select t1.staff_id,t2.staff_name 
-      from biz_order_info t1 left join sys_staff_info t2 on t1.staff_id=t2.staff_id
-				]]>
-		</value>
-	</sql>
+	<value>
+	<![CDATA[
+       	select t1.staff_id,t2.staff_name 
+       	from biz_order_info t1 
+           	 left join sys_staff_info t2 
+                 on t1.staff_id=t2.staff_id
+	]]>
+	</value>
+  </sql>
  
   ```
   * 缓存翻译做法
   ```xml
   select staff_id,staff_id staffName from biz_order_info
   <sql id="sqltoy_query_order_info">
-    <!-- 员工名称翻译 -->
-		<translate cache="staffIdNameCache"	columns="staffName" />
-		<value>
-			<![CDATA[
-			 select staff_id,staff_id staffName from biz_order_info
-				]]>
-		</value>
-	</sql>
+        <!-- 员工名称翻译 -->
+	<translate cache="staffIdNameCache" columns="staffName" />
+	<value>
+	<![CDATA[
+        select staff_id,staff_id staffName from biz_order_info
+	]]>
+	</value>
+  </sql>
   ```
   
 # 配置和启用缓存翻译
 * 在src/main/resources 目录下面增加:sqltoy-translate.xml 文件，如改变文件名称则需要额外配置
+* 修改application.yml 文件,设置translateConfig 属性
 ```yml
 spring:
  sqltoy:
