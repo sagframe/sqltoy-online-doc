@@ -1,7 +1,9 @@
-# CRUD 最特别的是update 的forceUpdateProps方式,正常情况下对象修改属性为null不做修改(符合实际项目过程特征:数据变更在每个环节只变更部分属性)，hibernate则强调先load然后update，这在分布式高并发集群模式下是由问题的，load后再update，可能别人已经改变过，而你又复写回去了。
-因此sqltoy的策略就不会有这种情况发生。
+# sqltoy CRUD最特别的是updatey以及其forceUpdateProps策略
+* 正常情况下对象修改属性为null不做修改(符合实际项目过程特征:数据变更在每个环节只变更部分属性)
+* hibernate则强调先load然后update，这在分布式高并发集群模式下是由问题的，load后再update，可能别人已经改变过，而你又复写回去了。
+* 因此sqltoy的策略就不会有这种情况发生。
 
-*请参见github trunk/sqltoy-showcase/src/test/java/com/sagframe/sqltoy/showcase目录
+* 请参见github trunk/sqltoy-showcase/src/test/java/com/sagframe/sqltoy/showcase目录
 * CrudCaseServiceTest.java首先Autowired SqlToyCRUDService,目的在于让开发者无需为简单的对象增删改和加载再写一个service和对应的方法。
 ```java
 @ExtendWith(SpringExtension.class)
@@ -10,27 +12,27 @@ public class CrudCaseServiceTest {
 	@Autowired
 	private SqlToyCRUDService sqlToyCRUDService;
   
-  //方法体.....
+        //方法体.....
  }
 ```
 # 对象加载load/loadAll
 ```java
   @Test
-	public void load() {
-		StaffInfoVO staff = sqlToyCRUDService.load(new StaffInfoVO("S190715003"));
-		System.err.println(JSON.toJSONString(staff));
-	}
+  public void load() {
+	StaffInfoVO staff = sqlToyCRUDService.load(new StaffInfoVO("S190715003"));
+	System.err.println(JSON.toJSONString(staff));
+  }
 
-	@Test
-	public void loadAll() {
-		// 组织批量数据
-		List<StaffInfoVO> staffs = new ArrayList<StaffInfoVO>();
-		String[] ids = { "S190715001", "S190715002" };
-		for (String id : ids) {
-			staffs.add(new StaffInfoVO(id));
-		}
-		sqlToyCRUDService.loadAll(staffs);
+  @Test
+  public void loadAll() {
+	// 组织批量数据
+	List<StaffInfoVO> staffs = new ArrayList<StaffInfoVO>();
+	String[] ids = { "S190715001", "S190715002" };
+	for (String id : ids) {
+		staffs.add(new StaffInfoVO(id));
 	}
+	sqlToyCRUDService.loadAll(staffs);
+  }
 ```
 # 新增记录
 ```java
@@ -54,20 +56,20 @@ public class CrudCaseServiceTest {
 	public void saveAllStaffInfo() {
 		// 组织批量数据
 		List<StaffInfoVO> staffs = new ArrayList<StaffInfoVO>();
-	  // 构造员工信息集合
+	  	// 构造员工信息集合
 		for (String[] id : dataSets) {
 			staffs.add(new StaffInfoVO(id));
 		}
 		sqlToyCRUDService.saveAll(staffs);
-    //忽视已经存在的
-    //sqlToyCRUDService.saveAllIgnoreExist(staffs);
+   		//忽视已经存在的
+   		//sqlToyCRUDService.saveAllIgnoreExist(staffs);
 	}
 ```
 # 修改记录
 * 1.sqltoy 修改操作分类:单记录修改、批量修改、级联修改
 ```java
 public interface SqlToyCRUDService {
-  /**
+  	/**
 	 * @todo 非深度修改对象,属性为null不做修改
 	 * @param entity
 	 */
@@ -99,7 +101,7 @@ public interface SqlToyCRUDService {
 	 */
 	public <T extends Serializable> Long updateAll(List<T> entities, String[] forceUpdateProps);
   
-  /**
+  	/**
 	 * @todo 批量深度集合修改
 	 * @param entities
 	 */
@@ -108,7 +110,7 @@ public interface SqlToyCRUDService {
 ```
 * 代码示例
 ```java 
- /**
+	/**
 	 * 修改员工记录信息
 	 */
 	// 演示sqltoy修改数据的策略
@@ -122,8 +124,8 @@ public interface SqlToyCRUDService {
 		staffInfo.setOrganId("C0002");
 		sqlToyCRUDService.update(staffInfo);
 	}
-  
-  /**
+
+	/**
 	 * 对员工信息特定字段进行强制修改
 	 */
 	@Test
