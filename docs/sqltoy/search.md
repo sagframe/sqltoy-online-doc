@@ -2,45 +2,45 @@
 # 针对查询主要提供以下功能
 * loadBySql 通过sql查询提取一条记录
 ```java
-  /**
-	 * @todo 通过sql获取单条记录
-	 * @param sqlOrNamedSql
-	 * @param paramsNamed
-	 * @param paramsValue
-	 * @param voClass
-	 * @return
-	 */
-	public <T> T loadBySql(final String sqlOrNamedSql, final String[] paramsNamed, final Object[] paramsValue,
-			final Class<T> voClass);
+/**
+ * @todo 通过sql获取单条记录
+ * @param sqlOrNamedSql
+ * @param paramsNamed
+ * @param paramsValue
+ * @param voClass
+ * @return
+ */
+public <T> T loadBySql(final String sqlOrNamedSql, final String[] paramsNamed, final Object[] paramsValue,
+		final Class<T> voClass);
 
-	/**
-	 * @todo 通过对象实体传参数,框架结合sql中的参数名称来映射对象属性取值
-	 * @param sqlOrNamedSql
-	 * @param entity
-	 * @return
-	 */
-	public <T extends Serializable> T loadBySql(final String sqlOrNamedSql, final T entity);
+/**
+ * @todo 通过对象实体传参数,框架结合sql中的参数名称来映射对象属性取值
+ * @param sqlOrNamedSql
+ * @param entity
+ * @return
+ */
+public <T extends Serializable> T loadBySql(final String sqlOrNamedSql, final T entity);
   
-  //代码范例
+//代码范例
   
-  /**
-	 * 根据对象加载数据
-	 */
-	@Test
-	public void loadByEntity() {
-		OrganInfoVO parentOrgan = sqlToyLazyDao.load(new OrganInfoVO("100008"));
-		System.out.print(JSON.toJSONString(parentOrgan));
-	}
-  
-  /**
-	 * 普通sql加载对象,最后一个参数可以是null(返回二维List)，也可以是HashMap返回List<Map>
-	 */
-	@Test
-	public void loadBySql() {
-		List<OrganInfoVO> subOrgans = sqlToyLazyDao.findBySql("sqltoy_treeTable_search", new String[] { "nodeRoute" },
-				new Object[] { ",100008," }, OrganInfoVO.class);
-		System.out.print(JSON.toJSONString(subOrgans));
-	}
+/**
+ * 根据对象加载数据
+ */
+@Test
+public void loadByEntity() {
+	OrganInfoVO parentOrgan = sqlToyLazyDao.load(new OrganInfoVO("100008"));
+	System.out.print(JSON.toJSONString(parentOrgan));
+}
+
+/**
+ * 普通sql加载对象,最后一个参数可以是null(返回二维List)，也可以是HashMap返回List<Map>
+ */
+@Test
+public void loadBySql() {
+	List<OrganInfoVO> subOrgans = sqlToyLazyDao.findBySql("sqltoy_treeTable_search", new String[] { "nodeRoute" },
+			new Object[] { ",100008," }, OrganInfoVO.class);
+	System.out.print(JSON.toJSONString(subOrgans));
+}
 ```
 
 * getSingleValue 根据sql查询获取单一数值
