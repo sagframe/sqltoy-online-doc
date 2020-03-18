@@ -59,6 +59,7 @@ public Object getSingleValue(final String sqlOrNamedSql, final String[] paramsNa
 
 ```
 * findBySql 通过sql查询返回一个List集合
+
 * findPageBySql 通过sql查询返回一个分页模型(rows\pageNo\pageSize\recordCount\totalPage)
 * findTopBySql 通过topSize返回前多少条记录，topSize>1 则取固定记录，topSize<1 则按比例提取记录
 * getRandomResult 通过randomSize 提取随机记录
