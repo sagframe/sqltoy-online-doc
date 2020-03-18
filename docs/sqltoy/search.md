@@ -1,5 +1,5 @@
 # sql查询框架默认提供了SqlToyLazyDao，让开发者可以在service中直接调用，无需自己写dao，sqltoy原则上不提倡开发者写dao
-# 针对查询主要提供以下功能
+# 常用功能简介
 * loadBySql 通过sql查询提取一条记录
 ```java
 /**
@@ -49,7 +49,7 @@ public void loadBySql() {
 * getSingleValue 根据sql查询获取单一数值
 ```java
 /**
- * @TODO 获取查询结果的第一条、第一列的值，一般用select max(x) from 等
+ * @TODO 获取查询结果的第一条、第一列的值，例如执行:select max(x) from 等
  * @param sqlOrNamedSql
  * @param paramsNamed
  * @param paramsValue
