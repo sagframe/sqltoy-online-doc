@@ -22,14 +22,17 @@ public <T> T loadBySql(final String sqlOrNamedSql, final String[] paramsNamed, f
 public <T extends Serializable> T loadBySql(final String sqlOrNamedSql, final T entity);
   
 //代码范例
-  
+
+//注入sqlToyLazyDao
+@Autowired
+private SqlToyLazyDao sqlToyLazyDao;
 /**
  * 根据对象加载数据
  */
 @Test
 public void loadByEntity() {
-	OrganInfoVO parentOrgan = sqlToyLazyDao.load(new OrganInfoVO("100008"));
-	System.out.print(JSON.toJSONString(parentOrgan));
+   OrganInfoVO parentOrgan = sqlToyLazyDao.load(new OrganInfoVO("100008"));
+   System.out.print(JSON.toJSONString(parentOrgan));
 }
 
 /**
@@ -37,23 +40,23 @@ public void loadByEntity() {
  */
 @Test
 public void loadBySql() {
-	List<OrganInfoVO> subOrgans = sqlToyLazyDao.findBySql("sqltoy_treeTable_search", new String[] { "nodeRoute" },
+      List<OrganInfoVO> subOrgans = sqlToyLazyDao.findBySql("sqltoy_treeTable_search", new String[] { "nodeRoute" },
 			new Object[] { ",100008," }, OrganInfoVO.class);
-	System.out.print(JSON.toJSONString(subOrgans));
+      System.out.print(JSON.toJSONString(subOrgans));
 }
 ```
 
 * getSingleValue 根据sql查询获取单一数值
 ```java
-  /**
-	 * @TODO 获取查询结果的第一条、第一列的值，一般用select max(x) from 等
-	 * @param sqlOrNamedSql
-	 * @param paramsNamed
-	 * @param paramsValue
-	 * @return
-	 */
-	public Object getSingleValue(final String sqlOrNamedSql, final String[] paramsNamed, final Object[] paramsValue);
-  
+/**
+ * @TODO 获取查询结果的第一条、第一列的值，一般用select max(x) from 等
+ * @param sqlOrNamedSql
+ * @param paramsNamed
+ * @param paramsValue
+ * @return
+ */
+public Object getSingleValue(final String sqlOrNamedSql, final String[] paramsNamed, final Object[] paramsValue);
+
 ```
 * findBySql 通过sql查询返回一个List集合
 * findPageBySql 通过sql查询返回一个分页模型(rows\pageNo\pageSize\recordCount\totalPage)
