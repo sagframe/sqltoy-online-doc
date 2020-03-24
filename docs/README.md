@@ -5,4 +5,4 @@
 # QQ技术交流群:531812227
 
 # 详细功能说明请参见:
-  * sagacity-sqltoy/docs/睿智平台SqlToy4.3使用手册.doc
+  * sagacity-sqltoy/docs/睿智平台SqlToy4.10使用手册.doc
