@@ -6,3 +6,6 @@
 
 # 详细功能说明请参见:
   * sagacity-sqltoy/docs/睿智平台SqlToy4.10使用手册.doc
+
+# <center><font color="red">用sqltoy感受sql之美 </font></center>
+
