@@ -81,6 +81,65 @@ S0001|C10001|101|2020-03-10|10|3000|30000|02|1001|N002
 香蕉|2019年4月|12 | 2400|2700
 香蕉|2019年3月|13 | 2300|2700
 
+* sqltoy 实现行转列
+```xml
+<!-- 列转行 -->
+<sql id="pivot_case">
+<value>
+<![CDATA[
+select t.fruit_name,t.order_month,t.sale_count,t.sale_quantity,t.total_amt 
+from sqltoy_fruit_order t
+order by t.fruit_name ,t.order_month
+]]>
+</value>
+<!-- 数据旋转,行转列,将order_month 按列显示，每个月份下面有三个指标 -->
+<pivot start-column="sale_count" end-column="total_amt"
+	group-columns="fruit_name" category-columns="order_month" />
+</sql>
+```
+* 效果
+
+<table>
+	<thead>
+<tr>
+	<th rowspan="2">品类</th>
+	<th rowspan="3">2019年3月</th>
+	<th rowspan="3">2019年4月</th>
+	<th rowspan="3">2019年5月</th>
+</tr>
+	<tr><th>笔数</th><th>数量</th><th>总金额</th>
+	    <th>笔数</th><th>数量</th><th>总金额</th>
+	    <th>笔数</th><th>数量</th><th>总金额</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+		<td>香蕉</td>
+		<td>香蕉</td>
+		<td>香蕉</td>
+		<td>香蕉</td>
+		<td>香蕉</td>
+		<td>香蕉</td>
+		<td>香蕉</td>
+		<td>香蕉</td>
+		<td>香蕉</td>
+		<td>香蕉</td>
+	</tr>
+		<tr>
+		<td>香蕉</td>
+		<td>香蕉</td>
+		<td>香蕉</td>
+		<td>香蕉</td>
+		<td>香蕉</td>
+		<td>香蕉</td>
+		<td>香蕉</td>
+		<td>香蕉</td>
+		<td>香蕉</td>
+		<td>香蕉</td>
+	</tr>
+	</tbody>
+</table>
+
 # 3. 感受sqltoy之美--分组汇总
 # 4. 感受sqltoy之美--环比计算
 
