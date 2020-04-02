@@ -90,7 +90,7 @@ spring:
 			check-frequency="15" has-inside-group="true" datasource="dataSource">
 			<sql><![CDATA[
 			--#not_debug#--
-			-- 这里比缓存定义哪里多了一列DICT_TYPE(has-inside-group="true" 时需要)
+			-- 这里比缓存定义多了一列DICT_TYPE(针对has-inside-group="true" 时需要)
 			select t.DICT_TYPE,t.DICT_KEY,t.DICT_NAME,t.STATUS
 			from SQLTOY_DICT_DETAIL t
 	        	where t.UPDATE_TIME>=:lastUpdateTime
