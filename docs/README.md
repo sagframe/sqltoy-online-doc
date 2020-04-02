@@ -85,16 +85,16 @@ S0001|C10001|101|2020-03-10|10|3000|30000|02|1001|N002
 ```xml
 <!-- 列转行 -->
 <sql id="pivot_case">
-<value>
-<![CDATA[
-select t.fruit_name,t.order_month,t.sale_count,t.sale_quantity,t.total_amt 
-from sqltoy_fruit_order t
-order by t.fruit_name ,t.order_month
-]]>
-</value>
-<!-- 数据旋转,行转列,将order_month 按列显示，每个月份下面有三个指标 -->
-<pivot start-column="sale_count" end-column="total_amt"
-	group-columns="fruit_name" category-columns="order_month" />
+	<value>
+	<![CDATA[
+	select t.fruit_name,t.order_month,t.sale_count,t.sale_quantity,t.total_amt 
+	from sqltoy_fruit_order t
+	order by t.fruit_name ,t.order_month
+	]]>
+	</value>
+	<!-- 行转列,将order_month作为分类横向标题，从sale_count列到total_amt 三个指标旋转成行 -->
+	<pivot start-column="sale_count" end-column="total_amt"
+		group-columns="fruit_name" category-columns="order_month" />
 </sql>
 ```
 * 效果
