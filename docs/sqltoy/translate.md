@@ -19,7 +19,7 @@
   select staff_id,staff_id staffName from biz_order_info
   <sql id="sqltoy_query_order_info">
         <!-- 员工名称翻译 -->
-	<translate cache="staffIdNameCache" columns="staffName" />
+	<translate cache="staffIdName" columns="staffName" />
 	<value>
 	<![CDATA[
         select staff_id,staff_id staffName from biz_order_info
@@ -48,7 +48,7 @@ spring:
 	xsi:schemaLocation="http://www.sagframe.com/schema/sqltoy-translate http://www.sagframe.com/schema/sqltoy/sqltoy-translate.xsd">
 	<cache-translates>
 		<!-- 基于sql直接查询的方式获取缓存 -->
-		<sql-translate cache="dictKeyNameCache"	datasource="dataSource">
+		<sql-translate cache="dictKeyName"	datasource="dataSource">
 			<sql>
 			<![CDATA[
 				select t.DICT_KEY,t.DICT_NAME,t.STATUS
@@ -60,7 +60,7 @@ spring:
 		</sql-translate>
 
 		<!-- 员工ID和姓名的缓存 -->
-		<sql-translate cache="staffIdNameCache" datasource="dataSource">
+		<sql-translate cache="staffIdName" datasource="dataSource">
 			<sql>
 			<![CDATA[
 				select STAFF_ID,STAFF_NAME,STATUS
@@ -74,19 +74,28 @@ spring:
 	<!-- cluster-time-deviation 集群节点时间偏差,默认为1秒 -->	
 	<cache-update-checkers cluster-time-deviation="1">
 		<!-- 基于sql的缓存更新检测,#not_debug# 放于注释中表示轮询检测时无需打印sql日志 -->
-		<sql-checker check-frequency="15" datasource="dataSource">
+		<!-- 增量更新，检测到变化直接更新缓存 -->
+		<sql-increment-checker cache="staffIdName"
+			check-frequency="30" datasource="dataSource">
 			<sql><![CDATA[
 			--#not_debug#--
-			select distinct 'staffIdName' cacheName,null cache_type
-			from SQLTOY_STAFF_INFO t1
-			where t1.UPDATE_TIME >=:lastUpdateTime
-			-- 数据字典key和name缓存检测
-			union all 
-			select distinct 'dictKeyName' cacheName,t2.DICT_TYPE cache_type
-			from SQLTOY_DICT_DETAIL t2
-			where t2.UPDATE_TIME >=:lastUpdateTime
+			select STAFF_ID,STAFF_NAME,STATUS
+			from SQLTOY_STAFF_INFO
+	        	where UPDATE_TIME >=:lastUpdateTime
 			]]></sql>
-		</sql-checker>
+		</sql-increment-checker>
+
+		<!-- 增量更新检测,直接将查询结果更新当前缓存, has-inside-group="true" 查询结果第一列必须是缓存分类 -->
+		<sql-increment-checker cache="dictKeyName"
+			check-frequency="15" has-inside-group="true" datasource="dataSource">
+			<sql><![CDATA[
+			--#not_debug#--
+			-- 这里比缓存定义哪里多了一列DICT_TYPE(has-inside-group="true" 时需要)
+			select t.DICT_TYPE,t.DICT_KEY,t.DICT_NAME,t.STATUS
+			from SQLTOY_DICT_DETAIL t
+	        	where t.UPDATE_TIME>=:lastUpdateTime
+			]]></sql>
+		</sql-increment-checker>
 	</cache-update-checkers>
 </sagacity>
 
@@ -153,14 +162,7 @@ keep-alive| 非必填|缓存默认有效时长位3600秒,有效时长必须大�
 
 * cache-update-checkers 缓存更新检测,下面可以设置多种类型和多个缓存更新检测
 > 每次检测sqltoy传递的参数为:lastUpdateTime 缓存最后检测的时间
-> 缓存变更检测器也分:sql-checker\service-checker\rest-checker,返回数据结构
-  如果存在缓存分类则精确清理某个缓存下面某一类的数据,如无分类则清楚整个缓存,如员工表发生变更则清除staffIdNameCache信息,下次调用则全部重新获取。
-  
-缓存名称           |缓存分类
--------           |--------
-dictKeyNameCache  | postType  
-staffIdNameCache  | null
-
+> 缓存变更检测器也分:sql-increment-checker\service-increment-checker\rest-increment-checker,返回数据结构,除类似数据字典这种含子分类的特殊外，其他的数据结构跟缓存定义一致
 
 
 
