@@ -116,27 +116,27 @@ order by t.fruit_name ,t.order_month
 	<tbody>
 	<tr>
 		<td>香蕉</td>
-		<td>香蕉</td>
-		<td>香蕉</td>
-		<td>香蕉</td>
-		<td>香蕉</td>
-		<td>香蕉</td>
-		<td>香蕉</td>
-		<td>香蕉</td>
-		<td>香蕉</td>
-		<td>香蕉</td>
+		<td>13</td>
+		<td>2300</td>
+		<td>2700</td>
+		<td>12</td>
+		<td>2400</td>
+		<td>2700</td>
+		<td>10</td>
+		<td>2000</td>
+		<td>2000</td>
 	</tr>
 		<tr>
-		<td>香蕉</td>
-		<td>香蕉</td>
-		<td>香蕉</td>
-		<td>香蕉</td>
-		<td>香蕉</td>
-		<td>香蕉</td>
-		<td>香蕉</td>
-		<td>香蕉</td>
-		<td>香蕉</td>
-		<td>香蕉</td>
+		<td>苹果</td>
+		<td>13</td>
+		<td>2000</td>
+		<td>2500</td>
+		<td>11</td>
+		<td>1900</td>
+		<td>2600</td>
+		<td>12</td>
+		<td>2000</td>
+		<td>2400</td>
 	</tr>
 	</tbody>
 </table>
