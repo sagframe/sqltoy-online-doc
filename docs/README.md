@@ -97,8 +97,7 @@ S0001|C10001|101|2020-03-10|10|3000|30000|02|1001|N002
 	]]>
 	</value>
 	<!-- 行转列,将order_month作为分类横向标题，从sale_count列到total_amt 三个指标旋转成行 -->
-	<pivot start-column="sale_count" end-column="total_amt"
-		group-columns="fruit_name" category-columns="order_month" />
+	<pivot start-column="sale_count" end-column="total_amt"	group-columns="fruit_name" category-columns="order_month" />
 </sql>
 ```
 * 效果:简单一个pivot代替了复杂的sql，而且不用考虑不同数据库的实现差异
