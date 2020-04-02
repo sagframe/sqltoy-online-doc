@@ -152,9 +152,9 @@ S0001|C10001|101|2020-03-10|10|3000|30000|02|1001|N002
 <sql id="group_summary_case">
 	<value>
 		<![CDATA[
-			select t.fruit_name,t.order_month,t.sale_count,t.sale_quantity,t.total_amt 
-			from sqltoy_fruit_order t
-			order by t.fruit_name ,t.order_month
+		select t.fruit_name,t.order_month,t.sale_count,t.sale_quantity,t.total_amt 
+		from sqltoy_fruit_order t
+		order by t.fruit_name ,t.order_month
 		]]>
 	</value>
 	<!-- reverse 是否反向 -->	
@@ -180,6 +180,79 @@ S0001|C10001|101|2020-03-10|10|3000|30000|02|1001|N002
 香蕉|2019年3月|13 | 2300|2700
 
 # 4. 感受sqltoy之美--环比计算
+* 演示先行转列再环比计算
+```xml
+<!-- 列与列环比演示 -->
+<sql id="cols_relative_case">
+	<value>
+	<![CDATA[
+		select t.fruit_name,t.order_month,t.sale_count,t.sale_amt,t.total_amt 
+		from sqltoy_fruit_order t
+		order by t.fruit_name ,t.order_month
+	]]>
+	</value>
+	<!-- 数据旋转,行转列,将order_month 按列显示，每个月份下面有三个指标 -->
+	<pivot start-column="sale_count" end-column="total_amt"	group-columns="fruit_name" category-columns="order_month" />
+	<!-- 列与列之间进行环比计算 -->
+	<cols-chain-relative group-size="3" relative-indexs="1,2" start-column="1" format="#.00%" />
+</sql>
+```
+* 效果
+
+<table>
+<thead>
+	<tr>
+	<th rowspan="2">品类</th>
+	<th colspan="5">2019年3月</th>
+	<th colspan="5">2019年4月</th>
+	<th colspan="5">2019年5月</th>
+	</tr>
+	<tr>
+	    <th>笔数</th><th>数量</th><th>比上月</th><th>总金额</th><th>比上月</th>
+	    <th>笔数</th><th>数量</th><th>比上月</th><th>总金额</th><th>比上月</th>
+	    <th>笔数</th><th>数量</th><th>比上月</th><th>总金额</th><th>比上月</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+		<td>香蕉</td>
+		<td>13</td>
+		<td>2300</td>
+		<td></td>
+		<td>2700</td>
+		<td></td>
+		<td>12</td>
+		<td>2400</td>
+		<td>4.30%</td>
+		<td>2700</td>
+		<td>0.00%</td>
+		<td>10</td>
+		<td>2000</td>
+		<td>-16.70%</td>
+		<td>2000</td>
+		<td>-26.00%</td>
+	</tr>
+		<tr>
+		<td>苹果</td>
+		<td>13</td>
+		<td>2000</td>
+		<td></td>
+		<td>2500</td>
+		<td></td>
+		<td>11</td>
+		<td>1900</td>
+		<td>-5.10%</td>
+		<td>2600</td>
+		<td>4.00%</td>
+		<td>12</td>
+		<td>2000</td>
+		<td>5.20%</td>
+		<td>2400</td>
+		<td>-7.70%</td>
+	</tr>
+	</tbody>
+</table>
+
 
 
 
