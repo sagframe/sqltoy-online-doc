@@ -100,14 +100,15 @@ order by t.fruit_name ,t.order_month
 * 效果
 
 <table>
-	<thead>
-<tr>
+<thead>
+	<tr>
 	<th rowspan="2">品类</th>
-	<th rowspan="3">2019年3月</th>
-	<th rowspan="3">2019年4月</th>
-	<th rowspan="3">2019年5月</th>
-</tr>
-	<tr><th>笔数</th><th>数量</th><th>总金额</th>
+	<th colspan="3">2019年3月</th>
+	<th colspan="3">2019年4月</th>
+	<th colspan="3">2019年5月</th>
+	</tr>
+	<tr>
+	    <th>笔数</th><th>数量</th><th>总金额</th>
 	    <th>笔数</th><th>数量</th><th>总金额</th>
 	    <th>笔数</th><th>数量</th><th>总金额</th>
 	</tr>
