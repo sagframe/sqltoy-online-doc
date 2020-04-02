@@ -202,15 +202,15 @@ S0001|C10001|101|2020-03-10|10|3000|30000|02|1001|N002
 <table>
 <thead>
 	<tr>
-	<th rowspan="2">品类</th>
+	<th rowspan="2" nowrap="nowrap">品类</th>
 	<th colspan="5">2019年3月</th>
 	<th colspan="5">2019年4月</th>
 	<th colspan="5">2019年5月</th>
 	</tr>
 	<tr>
-	    <th>笔数</th><th>数量</th><th>比上月</th><th>总金额</th><th>比上月</th>
-	    <th>笔数</th><th>数量</th><th>比上月</th><th>总金额</th><th>比上月</th>
-	    <th>笔数</th><th>数量</th><th>比上月</th><th>总金额</th><th>比上月</th>
+	    <th nowrap="nowrap">笔数</th><th nowrap="nowrap">数量</th><th nowrap="nowrap">比上月</th><th nowrap="nowrap">总金额</th><th nowrap="nowrap">比上月</th>
+	    <th nowrap="nowrap">笔数</th><th nowrap="nowrap">数量</th><th nowrap="nowrap">比上月</th><th nowrap="nowrap">总金额</th><th nowrap="nowrap">比上月</th>
+	    <th nowrap="nowrap">笔数</th><th nowrap="nowrap">数量</th><th nowrap="nowrap">比上月</th><th nowrap="nowrap">总金额</th><th nowrap="nowrap">比上月</th>
 	</tr>
 	</thead>
 	<tbody>
