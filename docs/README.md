@@ -146,6 +146,39 @@ S0001|C10001|101|2020-03-10|10|3000|30000|02|1001|N002
 </table>
 
 # 3. 感受sqltoy之美--分组汇总
+* 还是上面的苹果销售表格
+```xml
+<!-- 演示分组汇总 -->
+<sql id="group_summary_case">
+	<value>
+		<![CDATA[
+			select t.fruit_name,t.order_month,t.sale_count,t.sale_quantity,t.total_amt 
+			from sqltoy_fruit_order t
+			order by t.fruit_name ,t.order_month
+		]]>
+	</value>
+	<!-- reverse 是否反向 -->	
+	<summary columns="sale_count,sale_quantity,total_amt" reverse="true">
+		<!-- 层级顺序保持从高到低 -->
+		<global sum-label="总计" label-column="fruit_name" />
+		<group group-column="fruit_name" sum-label="小计" label-column="fruit_name" />
+	</summary>
+</sql>
+```
+* 效果
+
+品类|销售月份|销售笔数|销售数量(吨)|销售金额(万元)
+----|-------|-------|----------|------------
+总计|       |   71  |    12600 |14900
+总计|       |  36  | 5900   | 7500
+苹果|2019年5月|12 | 2000|2400
+苹果|2019年4月|11 | 1900|2600
+苹果|2019年3月|13 | 2000|2500
+小计|       | 35  | 6700|7400
+香蕉|2019年5月|10 | 2000|2000
+香蕉|2019年4月|12 | 2400|2700
+香蕉|2019年3月|13 | 2300|2700
+
 # 4. 感受sqltoy之美--环比计算
 
 
