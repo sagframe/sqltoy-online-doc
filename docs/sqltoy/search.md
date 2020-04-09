@@ -1,11 +1,11 @@
-# 为什么是xml?
+# 1. 为什么是xml?
 * 首先消除一个误解:不要一提xml就觉得跟mybatis一样所有操作都写在xml中，sqltoy本身是提供了类似hibernate对象形式的crud操作的
 * 主要针对查询(尤其2张表以上或单表多条件查询)或少量场景下update语句基于xml书写
 * xml具有强格式校验,xml跟xsd(schema)结合，开发工具eclipse和idea会自动做相关的关联提示和错误检查。
 * xml的特性为今后不断扩展延伸功能提供了极大的可能，sqltoy一开始极为简单，应用的过程中不断发现新特性通过扩展得到了增强。
 
-# sql查询框架默认提供了SqlToyLazyDao，让开发者可以在service中直接调用，无需自己写dao，sqltoy原则上不提倡开发者写dao
-# sqltoy 的sql基本规范,注意开始部分的
+# 2. sqltoy-orm提倡开发只需要写service关注业务逻辑，dao则直接引用SqlToyLazyDao完成全部操作
+# 3. sqltoy 的sql基本规范
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <sqltoy xmlns="http://www.sagframe.com/schema/sqltoy"
