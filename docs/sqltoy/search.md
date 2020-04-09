@@ -4,7 +4,7 @@
 * xml具有强格式校验,xml跟xsd(schema)结合，开发工具eclipse和idea会自动做相关的关联提示和错误检查。
 * xml的特性为今后不断扩展延伸功能提供了极大的可能，sqltoy一开始极为简单，应用的过程中不断发现新特性通过扩展得到了增强。
 
-# 2. sqltoy-orm提倡开发只需要写service关注业务逻辑，dao则直接引用SqlToyLazyDao完成全部操作
+# 2. sqltoy提倡只写service逻辑部分，dao通过SqlToyLazyDao完成
 # 3. sqltoy 的sql基本规范
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
