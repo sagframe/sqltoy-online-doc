@@ -1,4 +1,105 @@
+# 为什么是xml?
+* 首先消除一个误解:不要一提xml就觉得跟mybatis一样所有操作都写在xml中，sqltoy本身是提供了类似hibernate对象形式的crud操作的
+* 主要针对查询(尤其2张表以上或单表多条件查询)或少量场景下update语句基于xml书写
+* xml具有强格式校验,xml跟xsd(schema)结合，开发工具eclipse和idea会自动做相关的关联提示和错误检查。
+* xml的特性为今后不断扩展延伸功能提供了极大的可能，sqltoy一开始极为简单，应用的过程中不断发现新特性通过扩展得到了增强。
+
 # sql查询框架默认提供了SqlToyLazyDao，让开发者可以在service中直接调用，无需自己写dao，sqltoy原则上不提倡开发者写dao
+# sqltoy 的sql基本规范,注意开始部分的
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<sqltoy xmlns="http://www.sagframe.com/schema/sqltoy"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.sagframe.com/schema/sqltoy http://www.sagframe.com/schema/sqltoy/sqltoy.xsd">
+	<!-- id 命名建议遵循: moduleName+functionName 模式,避免不同模块之间重复-->	
+	<sql id="moduleName_case">
+		<!-- filters 用来对参与查询或执行的参数值进行转化处理 -->
+		<filters>
+			<!-- 参数等于某个值则将参数值设置为null -->
+			<eq params="organType" value="-1" />
+			<!-- 将参数条件值转换为日期格式,format可以是yyyy-MM-dd这种自定义格式也可以是: 
+                          first_day:月的第一天;last_day:月的最后一天,first_year_day:年的第一天,last_year_day年的最后一天 -->
+			<to-date params="" format="yyyyMMdd" increment-days="1" />
+			<to-number params="" data-type="decimal" />
+			<!-- 通过缓存将名称用类似like模式匹配出对应的编码作为条件进行精准查询 -->
+			<cache-arg param="" cache-name="" cache-type="" alias-name="" />
+			<!-- 首要参数，比如页面上精准输入了订单编号，此时除特定条件外其他条件全部设置为null不参与查询 -->
+			<primary param="orderId" excludes="organIds" />
+			<!-- 将数组转化成in 的参数条件并增加单引号 -->
+			<to-in-arg params="" />
+			<!-- 空白转为null -->
+			<blank params="*" excludes="staffName" />
+			<!-- 参数值在某个区间则转为null -->
+			<between params="" start-value="0" end-value="9999"	excludes="" />
+			<!-- 将前端传过来的字符串切割成数组 -->
+			<split params="staffAuthOrgs" data-type="string" split-sign="," />
+			<!-- 参数小于等于某个值时转为null -->
+			<lte params="" value="" />
+			<!-- 参数小于某个值时转为null -->
+			<lt params="" value="" />
+			<!-- 参数大于等于某个值时转为null -->
+			<gte params="" value="" />
+			<!-- 参数大于某个值时转为null -->
+			<gt params="" value="" />
+			<!-- 字符替换,默认根据正则表达进行全部替换，is-first为true时只替换首个 -->
+			<replace params="" regex="" value="" is-first="false" />
+			<!-- 排他性参数,当某个参数是xxx值时,将其他参数设置为特定值 -->
+			<exclusive param="" compare-type="eq" compare-values=""	set-params="" set-value="" />
+		</filters>
+
+		<!-- 缓存翻译,可以对例如:A,B 这种拼连的进行翻译(要指定分隔符号后最后拼装符号 split-regex="," link-sign=",")
+		    uncached-template 是针对未能匹配时显示的补充,${value} 表示显示key值,可以key=[${value}未定义 
+			这种写法 -->
+		<translate cache="dictCache" cache-type="POST_TYPE" 
+			columns="POST_TYPE" cache-indexs="1" uncached-template="" />
+		<!-- 安全掩码:tel\姓名\地址\卡号 -->
+		<!--最简单用法: <secure-mask columns="" type="tel"/> -->
+		<secure-mask columns="" type="name" head-size="3"
+			tail-size="4" mask-code="*****" mask-rate="50" />
+		<!-- 分库策略 -->
+		<sharding-datasource strategy="multiDataBase" />
+		<!-- 分表策略 -->
+		<sharding-table tables="" strategy="hisRealTable"
+			params="" />
+		<!-- 分页优化,缓存相同查询条件的分页总记录数量, 
+                 alive-max:表示相同的一个sql保留100个不同条件查询 
+                 alive-seconds:相同的查询条件分页总记录数保留时长(单位秒) -->
+		<page-optimize alive-max="100" alive-seconds="600" />
+		<!-- 日期格式化 -->
+		<date-format columns="" format="yyyy-MM-dd HH:mm:ss" />
+		<!-- 数字格式 -->
+		<number-format columns="" format="capital-rmb" />
+		<value>
+		<![CDATA[
+		-- sql 中是可以直接写注释的
+		select t1.*,t2.ORGAN_NAME from 
+		@fast(select * from sys_staff_info t
+			  where #[t.sexType=:sexType]
+			        #[and t.JOIN_DATE>:beginDate]
+			        #[and t.STAFF_NAME like :staffName]
+			        -- 是否虚拟员工@if()做逻辑判断
+			        #[@if(:isVirtual==true||:isVirtual==0) and t.IS_VIRTUAL=1]
+			        ) t1,sys_organ_info t2
+	       where t1.ORGAN_ID=t2.ORGAN_ID
+		]]>	
+		</value>
+		<!-- count-sql(只针对分页查询有效,sqltoy分页针对计算count的sql进行了智能处理, 
+                 一般不需要额外定义countsql,除极为苛刻的性能优化，sqltoy提供了极度优化的口子) -->
+		<count-sql><![CDATA[]]></count-sql>
+		<!-- 汇总和求平均 -->
+		<summary columns="" radix-size="2" reverse="false" sum-site="left">
+			<global sum-label="" label-column="" />
+			<group sum-label="" label-column="" group-column="" />
+		</summary>
+		<!-- 拼接某列,mysql中等同于group_concat\oracle 中的WMSYS.WM_CONCAT功能 -->
+		<link sign="," column="" />
+		<!-- 行转列 (跟unpivot互斥) -->
+		<pivot category-columns="" group-columns="" start-column=""	end-column="" default-value="0" />
+		<!-- 列转行 -->
+		<unpivot columns-to-rows="1:xxx,2:xxxx" new-columns-labels="" />
+	</sql>
+</sqltoy>
+```
 # 常用功能简介
 * loadBySql 通过sql查询提取一条记录
 ```java
