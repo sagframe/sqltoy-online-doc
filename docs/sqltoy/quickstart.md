@@ -29,7 +29,7 @@
 	<dependency>
 		<groupId>com.sagframe</groupId>
 		<artifactId>sagacity-sqltoy-starter</artifactId>
-		<version>4.10.5</version>
+		<version>4.10.9</version>
 	</dependency>
         <!-- ehcache 用作缓存翻译 -->
 	<dependency>
@@ -140,7 +140,7 @@ spring:
 			select * from sqltoy_staff_info t 
 			where #[t.staff_name like :staffName]
 				  #[and t.status=:status]
-				]]>
+			]]>
 		</value>
 	</sql>
 </sqltoy>
