@@ -5,14 +5,14 @@
 * xml的特性为今后不断扩展延伸功能提供了极大的可能，sqltoy一开始极为简单，应用的过程中不断发现新特性通过扩展得到了增强。
 
 # 2. sqltoy提倡只写service逻辑部分，dao通过SqlToyLazyDao完成
-# 3. sqltoy 的sql基本规范
+# 3. sqltoy的sql基本规范,不要吓着,常用的不多
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <sqltoy xmlns="http://www.sagframe.com/schema/sqltoy"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.sagframe.com/schema/sqltoy http://www.sagframe.com/schema/sqltoy/sqltoy.xsd">
 	<!-- id 命名建议遵循: moduleName+functionName 模式,避免不同模块之间重复-->	
-	<sql id="moduleName_case">
+	<sql id="sqltoy_sql_specs">
 		<!-- filters 用来对参与查询或执行的参数值进行转化处理 -->
 		<filters>
 			<!-- 参数等于某个值则将参数值设置为null -->
@@ -23,7 +23,9 @@
 			<to-number params="" data-type="decimal" />
 			<!-- 通过缓存将名称用类似like模式匹配出对应的编码作为条件进行精准查询 -->
 			<cache-arg param="" cache-name="" cache-type="" alias-name="" />
-			<!-- 首要参数，比如页面上精准输入了订单编号，此时除特定条件外其他条件全部设置为null不参与查询 -->
+			<!-- 首要参数，比如页面上精准输入了订单编号，此时除特定条件外其他条件全部设置为null不参与查询
+                             特定的比如:授权访问机构(避免越权访问)
+                        -->
 			<primary param="orderId" excludes="organIds" />
 			<!-- 将数组转化成in 的参数条件并增加单引号 -->
 			<to-in-arg params="" />
@@ -100,6 +102,58 @@
 	</sql>
 </sqltoy>
 ```
+# sqltoy的核心逻辑：规则是单一的，靠filters中配置逻辑来规整统一
+* #[t1.type in (:types)]等同于 if(types==null) 则剔除#[] 中间的语句
+* #[]是支持嵌套的,如:#[and t1.status=:status #[and t.amt>=:amt]] 当status为null这段全部不参与查询
+```sql
+select * from table t1
+where #[t1.type in (:types)]
+      #[and t1.bizDate>=:beginDate]
+      #[and t1.bizDate<=:endDate]
+      #[and t1.status=:status #[and t.amt>=:amt]]
+```
+# 常规用法说明
+* 常规sql,上面规范是完整功能罗列别吓着了
+```xml
+<sql id="sqltoy_sql_specs">
+	<!-- filters 用来对参与查询或执行的参数值进行转化处理 -->
+	<filters>
+		<!-- 参数等于某个值则将参数值设置为null -->
+		<eq params="organType" value="-1" />
+	</filters>
+	<!-- 缓存翻译,可以对例如:A,B 这种拼连的进行翻译(要指定分隔符号后最后拼装符号 split-regex="," link-sign=",")
+	    uncached-template 是针对未能匹配时显示的补充,${value} 表示显示key值,可以key=[${value}未定义 
+		这种写法 -->
+	<translate cache="dictCache" cache-type="POST_TYPE" columns="POST_TYPE"/>
+	<!-- 日期格式化 -->
+	<date-format columns="" format="yyyy-MM-dd HH:mm:ss" />
+	<!-- 数字格式 -->
+	<number-format columns="" format="capital-rmb" />
+	<value>
+	<![CDATA[
+	-- sql 中是可以直接写注释的
+	select t1.*,t2.ORGAN_NAME from 
+	@fast(select * from sys_staff_info t
+		  where #[t.sexType=:sexType]
+			#[and t.JOIN_DATE>:beginDate]
+			#[and t.STAFF_NAME like :staffName]
+			-- 是否虚拟员工@if()做逻辑判断
+			#[@if(:isVirtual==true||:isVirtual==0) and t.IS_VIRTUAL=1]
+			) t1,sys_organ_info t2
+         where t1.ORGAN_ID=t2.ORGAN_ID
+	]]>	
+	</value>
+</sql>
+```
+* filter中的eq过滤是最常用的,比如页面上有一个下拉框:sexType,默认选项是:全部(value="-1"),
+  也就是sexType传过来值为-1时,就不做sexType条件过滤
+  
+<select name="sexType">
+	<option value="-1">全部</option>
+	<option value="F">男性</option>
+	<option value="M">女性</option>
+</select>
+
 # 常用功能简介
 * loadBySql 通过sql查询提取一条记录
 ```java
