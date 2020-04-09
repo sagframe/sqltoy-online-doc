@@ -102,7 +102,7 @@
 	</sql>
 </sqltoy>
 ```
-# sqltoy的核心逻辑：规则是单一的，靠filters中配置逻辑来规整统一
+# sqltoy的核心逻辑:规则很单一,靠filters配置逻辑来规整统一
 * #[t1.type in (:types)]等同于 if(types==null) 则剔除#[] 中间的语句
 * #[]是支持嵌套的,如:#[and t1.status=:status #[and t.amt>=:amt]] 当status为null这段全部不参与查询
 ```sql
@@ -147,13 +147,13 @@ where #[t1.type in (:types)]
 ```
 * filter中的eq过滤是最常用的,比如页面上有一个下拉框:sexType,默认选项是:全部(value="-1"),
   也就是sexType传过来值为-1时,就不做sexType条件过滤
-  
+```html 
 <select name="sexType">
 	<option value="-1">全部</option>
 	<option value="F">男性</option>
 	<option value="M">女性</option>
 </select>
-
+```
 # 常用功能简介
 * loadBySql 通过sql查询提取一条记录
 ```java
