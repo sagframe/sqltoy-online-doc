@@ -52,24 +52,23 @@
 		<!-- 缓存翻译,可以对例如:A,B 这种拼连的进行翻译(要指定分隔符号后最后拼装符号 split-regex="," link-sign=",")
 		    uncached-template 是针对未能匹配时显示的补充,${value} 表示显示key值,可以key=[${value}未定义 
 			这种写法 -->
-		<translate cache="dictCache" cache-type="POST_TYPE" 
-			columns="POST_TYPE" cache-indexs="1" uncached-template="" />
+		<translate cache="dictCache" cache-type="POST_TYPE" columns="POST_TYPE" cache-indexs="1" uncached-template="" />
 		<!-- 安全掩码:tel\姓名\地址\卡号 -->
 		<!--最简单用法: <secure-mask columns="" type="tel"/> -->
-		<secure-mask columns="" type="name" head-size="3"
-			tail-size="4" mask-code="*****" mask-rate="50" />
+		<secure-mask columns="" type="name" head-size="3" tail-size="4" mask-code="*****" mask-rate="50" />
 		<!-- 分库策略 -->
 		<sharding-datasource strategy="multiDataBase" />
 		<!-- 分表策略 -->
-		<sharding-table tables="" strategy="hisRealTable"
-			params="" />
+		<sharding-table tables="" strategy="hisRealTable" params="" />
 		<!-- 分页优化,缓存相同查询条件的分页总记录数量, 
                  alive-max:表示相同的一个sql保留100个不同条件查询 
                  alive-seconds:相同的查询条件分页总记录数保留时长(单位秒) -->
 		<page-optimize alive-max="100" alive-seconds="600" />
 		<!-- 日期格式化 -->
 		<date-format columns="" format="yyyy-MM-dd HH:mm:ss" />
-		<!-- 数字格式 -->
+		<!-- 数字格式：包括:#,###.00(可以自定义)、captial(数字转中文大写)、capital-rmb(大写金额) 
+                     比较实用的,财务单据上经常要用到
+                -->
 		<number-format columns="" format="capital-rmb" />
 		<value>
 		<![CDATA[
