@@ -121,7 +121,7 @@ spring:
          removeAbandonedTimeout: 300
     sqltoy:
         # 这里要注意，指定sql文件的路径,多个可以用逗号分隔，会自动向下寻找
-        sqlResourcesDir: /com/sagframe/sqltoy/showcase
+        sqlResourcesDir: classpath:/com/sagframe/sqltoy/showcase
         # debug模式会打印执行sql
         debug: true
 ```
