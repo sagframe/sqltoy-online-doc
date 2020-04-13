@@ -29,7 +29,7 @@
 	<dependency>
 		<groupId>com.sagframe</groupId>
 		<artifactId>sagacity-sqltoy-starter</artifactId>
-		<version>4.10.9</version>
+		<version>4.11.1</version>
 	</dependency>
         <!-- ehcache 用作缓存翻译 -->
 	<dependency>
@@ -40,7 +40,7 @@
 	<dependency>
 		<groupId>com.alibaba</groupId>
 		<artifactId>fastjson</artifactId>
-		<version>1.2.66</version>
+		<version>1.2.68</version>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
@@ -122,8 +122,14 @@ spring:
     sqltoy:
         # 这里要注意，指定sql文件的路径,多个可以用逗号分隔，会自动向下寻找
         sqlResourcesDir: classpath:/com/sagframe/sqltoy/showcase
+        # 缓存翻译的配置
+        translateConfig: classpath:sqltoy-translate.xml
         # debug模式会打印执行sql
         debug: true
+        # 提供统一字段:createBy createTime updateBy updateTime 等字段补漏性(为空时)赋值(可选配置)
+        unifyFieldsHandler: com.sagframe.sqltoy.plugins.SqlToyUnifyFieldsHandler
+        # sql执行超过多长时间则进行日志输出,用于监控哪些慢sql(可选配置:默认30秒)
+        printSqlTimeoutMillis: 300000
 ```
 
 * 编写你的第一个sql,在com/sagframe/sqltoy/showcase创建sqltoy-showcase.sql.xml 必须要以*.sql.xml 结尾
