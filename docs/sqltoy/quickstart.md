@@ -133,7 +133,7 @@ spring:
 ```
 
 * 编写你的第一个sql,在com/sagframe/sqltoy/showcase创建sqltoy-showcase.sql.xml 必须要以*.sql.xml 结尾,注意sql编写的格式,必须
-要符合范例的格式<sqltoy><sql id=""><value><![CDATA[]]></value></sql></sqltoy> 模式
+要符合范例的格式:```<sqltoy><sql id=""><value><![CDATA[]]></value></sql></sqltoy>``` 模式
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
