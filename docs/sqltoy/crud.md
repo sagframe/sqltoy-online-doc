@@ -1,6 +1,6 @@
 # CRUD最特别的是update及其forceUpdateProps策略
 * 正常情况下对象修改属性为null不做修改(符合实际项目过程特征:数据变更在每个环节只变更部分属性)
-* hibernate则强调先load然后update，这在分布式高并发集群模式下是由问题的，load后再update，可能别人已经改变过，而你又复写回去了。
+* hibernate则强调先load然后update，这在分布式高并发集群模式下是有问题的，load后再update，可能别人已经改变过，而你又复写回去了。
 * 因此sqltoy的策略就不会有这种情况发生。
 
 * 请参见github trunk/sqltoy-showcase/src/test/java/com/sagframe/sqltoy/showcase目录
