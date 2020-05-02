@@ -1,6 +1,6 @@
 # sqltoy的sql只能写在xml中吗?
 * 不是的，sql可以直接写在代码中也可以通过@ListSql 和@PageSql两个注解完成(但一般很少用注解)。
-* sql参数的名字是sqlOrNamedSql 表示可以直接是sql也可以是xml中定义的sql id。
+* sql参数的名字是sqlOrNamedSql 表示可以直接是sql也可以是xml中定义的sql id。(是所有场景都是这个规则，下面的loadBySql只是一个说明范例)
 ```java
 /**
  * @todo 通过sql获取单条记录
@@ -13,6 +13,9 @@
 public <T> T loadBySql(final String sqlOrNamedSql, final String[] paramsNamed, final Object[] paramsValue,
 		final Class<T> voClass);
 ```
+# sqltoy查询#[]支持嵌套吗?
+* sqltoy 动态操作#[]是支持嵌套的且是无限层嵌套,可以#[and t.status=:status  #[ and t.xxx=:xxx]]
+
 # sqltoy-orm可以不用写sql完成crud吗？
 * orm的概念其实就是基于对象完成对数据库的操作，sqltoy-orm提供了基于对象的数据库操作，类似于hibernate jpa！
 
@@ -74,4 +77,3 @@ protected Long executeSql(final String sqlOrNamedSql, final String[] paramsNamed
 	return executeSql(sqlOrNamedSql, paramsNamed, paramsValue, false, this.getDataSource(null));
 }
 ```
-
