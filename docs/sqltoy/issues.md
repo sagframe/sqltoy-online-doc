@@ -1,5 +1,5 @@
 # sqltoy的sql只能写在xml中吗?
-* 不是的，sql可以直接写在代码中也可以通过@ListSql 和@PageSql两个注解完成。
+* 不是的，sql可以直接写在代码中也可以通过@ListSql 和@PageSql两个注解完成(但一般很少用注解)。
 * sql参数的名字是sqlOrNamedSql 表示可以直接是sql也可以是xml中定义的sql id。
 ```java
 /**
