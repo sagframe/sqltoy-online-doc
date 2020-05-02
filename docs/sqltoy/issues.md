@@ -1,3 +1,18 @@
+# sqltoy的sql只能写在xml中吗?
+* 不是的，sql可以直接写在代码中也可以通过@ListSql 和@PageSql两个注解完成。
+* sql参数的名字是sqlOrNamedSql 表示可以直接是sql也可以是xml中定义的sql id。
+```java
+/**
+ * @todo 通过sql获取单条记录
+ * @param sqlOrNamedSql 直接代码中写的sql或者xml中定义的sql id
+ * @param paramsNamed
+ * @param paramsValue
+ * @param voClass
+ * @return
+ */
+public <T> T loadBySql(final String sqlOrNamedSql, final String[] paramsNamed, final Object[] paramsValue,
+		final Class<T> voClass);
+```
 # sqltoy-orm可以不用写sql完成crud吗？
 * orm的概念其实就是基于对象完成对数据库的操作，sqltoy-orm提供了基于对象的数据库操作，类似于hibernate jpa！
 
@@ -22,7 +37,41 @@
 * 这个属于事务配置文件，lazyDao应该在service层调用，service层上应该配置事务，事务配置可以注解模式，也可以通过aop 在方法规则上进行控制，注解配置范例可以参照SqlToyCRUDServiceImpl类
 ```java
   @Transactional
-	public Object save(Serializable entity) {
-		return sqlToyLazyDao.save(entity);
-	}
+  public Object save(Serializable entity) {
+	return sqlToyLazyDao.save(entity);
+  }
 ```
+# 如何批量执行一个自定义的sql?
+* sqltoy 提供了batchUpdate方法，可以将sql写在xml中，比如merge into 
+```java
+/**
+ * @todo 批量执行sql修改或删除操作(返回updateCount)
+ * @param sqlOrNamedSql
+ * @param dataSet
+ * @param reflectPropertyHandler 反调函数(一般不需要)
+ * @param autoCommit
+ */
+protected Long batchUpdate(final String sqlOrNamedSql, final List dataSet,
+		final ReflectPropertyHandler reflectPropertyHandler, final Boolean autoCommit) {
+	//例如sql 为:merge into table  update set xxx=:param
+	//dataSet可以是VO List,可以根据属性自动映射到:param
+	return batchUpdate(sqlOrNamedSql, dataSet, sqlToyContext.getBatchSize(), reflectPropertyHandler, null,
+			autoCommit, this.getDataSource(null));
+}
+
+```
+
+# 如何根据参数执行一个修改类sql?
+* sqltoy提供了executeSql方法，跟执行查询类似,sql可以写在代码中也可以写在xml文件中
+```java
+/**
+ * @todo 执行无返回结果的SQL(返回updateCount)
+ * @param sqlOrNamedSql
+ * @param paramsNamed
+ * @param paramsValue
+ */
+protected Long executeSql(final String sqlOrNamedSql, final String[] paramsNamed, final Object[] paramsValue) {
+	return executeSql(sqlOrNamedSql, paramsNamed, paramsValue, false, this.getDataSource(null));
+}
+```
+
