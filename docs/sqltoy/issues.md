@@ -13,6 +13,28 @@
 public <T> T loadBySql(final String sqlOrNamedSql, final String[] paramsNamed, final Object[] paramsValue,
 		final Class<T> voClass);
 ```
+# sqltoy的查询结果只能是VO list吗?
+* 不是的,所有的查询Class<T> voClass 这里分1、voClass 常规的vo类型; 2、null 表示ArrayList;3、HashMap.class\LinkedHashMap.class
+```
+/**
+ * @TODO 查询集合
+ * @param <T>
+ * @param sql
+ * @param paramsNamed
+ * @param paramsValue
+ * @param voClass 分null(返回二维List)、voClass、HashMap.class、LinkedHashMap.class等
+ * @return
+ */
+protected <T> List<T> findBySql(final String sql, final String[] paramsNamed, final Object[] paramsValue,
+		final Class<T> voClass) {
+	QueryExecutor query = new QueryExecutor(sql, paramsNamed, paramsValue);
+	if (voClass != null) {
+		query.resultType(voClass);
+	}
+	return (List<T>) findByQuery(query).getRows();
+}
+```
+	
 # sqltoy查询#[]支持嵌套吗?
 * sqltoy 动态操作#[]是支持嵌套的且是无限层嵌套,可以#[and t.status=:status  #[ and t.xxx=:xxx]]
 
