@@ -1,4 +1,4 @@
-# sqltoy的sql只能写在xml中吗?
+# 1. sqltoy的sql只能写在xml中吗?
 * 不是的，sql可以直接写在代码中也可以通过@ListSql 和@PageSql两个注解完成(但一般很少用注解)。
 * sql参数的名字是sqlOrNamedSql 表示可以直接是sql也可以是xml中定义的sql id。(是所有场景都是这个规则，下面的loadBySql只是一个说明范例)
 ```java
@@ -13,7 +13,7 @@
 public <T> T loadBySql(final String sqlOrNamedSql, final String[] paramsNamed, final Object[] paramsValue,
 		final Class<T> voClass);
 ```
-# sqltoy的查询结果只能是VO list吗?
+# 2. sqltoy的查询结果只能是VO list吗?
 * 不是的,所有的查询Class<T> voClass 这里分1、voClass 常规的vo类型; 2、null 表示ArrayList;3、HashMap.class\LinkedHashMap.class
 ```
 /**
@@ -35,16 +35,16 @@ protected <T> List<T> findBySql(final String sql, final String[] paramsNamed, fi
 }
 ```
 	
-# sqltoy查询#[]支持嵌套吗?
+# 3. sqltoy查询#[]支持嵌套吗?
 * sqltoy 动态操作#[]是支持嵌套的且是无限层嵌套,可以#[and t.status=:status  #[ and t.xxx=:xxx]]
 
-# sqltoy-orm可以不用写sql完成crud吗？
+# 4. sqltoy-orm可以不用写sql完成crud吗？
 * orm的概念其实就是基于对象完成对数据库的操作，sqltoy-orm提供了基于对象的数据库操作，类似于hibernate jpa！
 
-# 如何开始crud？
+# 5. 如何开始crud？
 * 请参照sqltoy-showcase/tools/quickvo 先通过数据库产生POJO，然后参照showcase下面/src/test/java下面的CrudCaseServiceTest！
 
-# quickvo支持yml配置文件吗？
+# 6. quickvo支持yml配置文件吗？
 * 不支持,不用纠结这个环节，quickvo只是一个工具，如果项目使用的是yml则可以给quickvo单独一个properties配置文件，或者直接通过quickvo.xml 中的property来定义，如下
 ```xml
 <property name="jdbc.connection.url">
@@ -54,11 +54,11 @@ protected <T> List<T> findBySql(final String sql, final String[] paramsNamed, fi
 </property>
 <property name="jdbc.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
 ```
-# quickvo提示没有匹配到表生成vo
+# 7. quickvo提示没有匹配到表生成vo
 * 请检查catalog 或schema 配置是否正确，且大小写是否正确！oracle、sqlServer、postgresql用schema,mysql\DB2则需配置:catalog！
 具体可以了解jdbc的conn.getMetaData().getTables(catalog,schemaPattern,tablePattern,types) 方法规范
 
-# 为什么SqlToyLazyDao save或update操作数据库未发生改变？
+# 8. 为什么SqlToyLazyDao save或update操作数据库未发生改变？
 * 这个属于事务配置文件，lazyDao应该在service层调用，service层上应该配置事务，事务配置可以注解模式，也可以通过aop 在方法规则上进行控制，注解配置范例可以参照SqlToyCRUDServiceImpl类
 ```java
   @Transactional
@@ -66,7 +66,7 @@ protected <T> List<T> findBySql(final String sql, final String[] paramsNamed, fi
 	return sqlToyLazyDao.save(entity);
   }
 ```
-# 如何批量执行一个自定义的sql?
+# 9. 如何批量执行一个自定义的sql?
 * sqltoy 提供了batchUpdate方法，可以将sql写在xml中，比如merge into 
 ```java
 /**
@@ -86,7 +86,7 @@ protected Long batchUpdate(final String sqlOrNamedSql, final List dataSet,
 
 ```
 
-# 如何根据参数执行一个修改类sql?
+# 10. 如何根据参数执行一个修改类sql?
 * sqltoy提供了executeSql方法，跟执行查询类似,sql可以写在代码中也可以写在xml文件中
 ```java
 /**
@@ -99,3 +99,7 @@ protected Long executeSql(final String sqlOrNamedSql, final String[] paramsNamed
 	return executeSql(sqlOrNamedSql, paramsNamed, paramsValue, false, this.getDataSource(null));
 }
 ```
+
+# 11. 为什么我手写VO和表映射无法执行
+* 请使用quickvo生成跟数据库的映射关系，sqltoy从来不鼓励手工写跟数据库映射，也没有必要去尝试！
+* 是不是因为复杂所以不鼓励? 不是，是因为从来就没有手工写过，再简单也记不住!因为这个就应该是工具生成，没有必要浪费大脑!
