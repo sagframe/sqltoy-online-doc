@@ -60,6 +60,7 @@ protected <T> List<T> findBySql(final String sql, final String[] paramsNamed, fi
 
 # 8. 为什么SqlToyLazyDao save或update操作数据库未发生改变？
 * 这个属于事务配置文件，lazyDao应该在service层调用，service层上应该配置事务，事务配置可以注解模式，也可以通过aop 在方法规则上进行控制，注解配置范例可以参照SqlToyCRUDServiceImpl类
+* 如果在Controller层调用SqlToyCRUDService则会自动完成数据库保存，因为SqlToyCRUDService方法上已经加了事务注解。
 ```java
   @Transactional
   public Object save(Serializable entity) {
