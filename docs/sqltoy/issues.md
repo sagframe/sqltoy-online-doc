@@ -107,4 +107,5 @@ protected Long executeSql(final String sqlOrNamedSql, final String[] paramsNamed
 
 # 12. 多数据源如何实现事务管理
 * 请引入Jta进行事务管理，Atomikos+ spring Jta,多数据源同时要支持读和写本身就是一个特有的场景，建议可以针对此进行服务化
+* 参照地址: https://www.cnblogs.com/wangyong/p/4174326.html
 * sqltoy 一写多读可以按照常规模式进行配置，无需使用Jta。
