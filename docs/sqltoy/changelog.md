@@ -39,6 +39,44 @@ public void findEntity() {
 }
 ```
 
+# 版本号4.11.9 日期2020.5.8
+1、支持保留字处理，对象操作自动增加保留字符号，跨数据库sql自动适配
+
+* 首先尽量避免使用保留字
+* sqltoy支持保留字处理主要考虑一些已有项目
+
+2、重新编写修复StringUtil 分隔符号切割函数splitExcludeSymMark( 在sqltoy简单场景下不受影响)
+3、增加缓存数据获取为空的日志提醒,，给开发更多信息
+4、查询返回结果支持List<Object[]>,同时支持resultType 直接给Map.class等接口（之前必须是HashMap等实现类）
+5、quickvo支持yml格式的配置文件
+6、增强sql执行输出
+
+# 保留字支持
+```xml
+<bean id="sqlToyContext" name="sqlToyContext"  class="org.sagacity.sqltoy.SqlToyContext" 
+init-method="initialize" destroy-method="destroy">
+<!-- 项目中使用到的保留字定义，多个保留字则用逗号分隔 -->
+<property name="reservedWords" value="maxvalue,minvalue"/>
+<!--  其他配置项目此处省略 -->
+</bean>
+```
+```xml
+# yml模式
+spring:
+    sqltoy:
+        reservedWords: maxvalue,minvalue
+```
+
+# 注意事项
+* 保留字分对象操作和自定义sql两个部分，对象操作框架自动完成保留字的处理
+* 自定义sql中的保留字需要根据当前数据库增加保留字符号，当作为产品用于不同数据库时框架会自动适配
+```sql
+-- sqlserver
+select t.[maxvalue],t.name from table t 
+-- mysql 
+select t.`maxvalue`,t.name from table t 
+```
+
 # 版本号4.10.5(GA版本) 日期2020.3.31
 * 1.缓存翻译对应的缓存更新增加了增量更新机制
 * 2.增加了环比计算功能，同时优化了unpivot 列转行配置和实现策略
