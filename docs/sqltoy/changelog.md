@@ -1,3 +1,44 @@
+# 版本号4.12.2(GA版本) 日期2020.5.21
+1、增加代码中直接写sql查询时自动根据情况补齐select c1,c2,.. from table where 
+```java
+findBySql("where xx=:param and xx1=:parm1", {"param","param1"}, {value1,value2},
+			StaffInfoVO.class)
+
+自动补齐where 前面的select col1,col2... from STAFF_INFO
+```
+2、优化quickvo，剔除对log4j的依赖改用jdk自带log，大幅减小jar的大小
+3、增加三个单表查询、修改、删除方法，更加简化单表操作，便于内部逻辑快捷处理
+
+```java
+public <T> List<T> findEntity(Class<T> resultType, EntityQuery entityQuery);
+
+public Long updateByQuery(Class entityClass, EntityUpdate entityUpdate);
+
+public Long deleteByQuery(Class entityClass, EntityQuery entityQuery);
+
+```
+
+用法：
+```java
+
+/**
+ * findEntity 模式,简化sql编写模式,面向接口服务层提供快捷数据查询和处理
+ * 1、通过where指定条件
+ * 2、支持lock
+ * 3、支持order by (order by 在接口服务 层意义不大)
+ * 4、自动将对象属性映射成表字段
+ */
+@Test
+public void findEntity() {
+    //条件利用sqltoy特有的#[]充当动态条件判断,#[]是支持嵌套的
+   String conditions = "#[staffName like ?] #[ and status=?]";
+   List<StaffInfoVO> staffVOs = sqlToyLazyDao.findEntity(StaffInfoVO.class,			 
+               EntityQuery.create().where(conditions).lock(LockMode.UPGRADE)
+                      .orderBy("staffName").orderByDesc("createTime").values("陈", 1));
+    System.err.println(JSON.toJSONString(staffVOs));
+}
+```
+
 # 版本号4.10.5(GA版本) 日期2020.3.31
 * 1.缓存翻译对应的缓存更新增加了增量更新机制
 * 2.增加了环比计算功能，同时优化了unpivot 列转行配置和实现策略
