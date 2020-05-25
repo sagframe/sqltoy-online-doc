@@ -82,3 +82,77 @@
 	</value>
 </sql>
 ```
+# 2.对象操作分库分表
+* 涉及增加、修改、删除操作的分库需要用到分布式事务管理,参见:https://github.com/chenrenfei/sqltoy-showcase/tree/master/trunk/sqltoy-sharding 
+* 使用jta进行事务管理
+* 在对象上进行注解,sharding配置文件参见:src/java/resources/spring-sqltoy-sharding.xml
+
+```java
+package com.sagframe.sqltoy.showcase.vo;
+
+import java.time.LocalDateTime;
+
+import org.sagacity.sqltoy.config.annotation.Sharding;
+import org.sagacity.sqltoy.config.annotation.SqlToyEntity;
+import org.sagacity.sqltoy.config.annotation.Strategy;
+
+import com.sagframe.sqltoy.showcase.vo.base.AbstractStaffInfoVO;
+
+/**
+ * @project sqltoy-oracle
+ * @author zhongxuchen
+ * @version 1.0.0 Table: sqltoy_staff_info,Remark:员工信息表
+ */
+@SqlToyEntity
+@Sharding(db = @Strategy(name = "hashBalanceDBSharding", fields = { "staffId" })
+//分表跟分库类似
+//,table = @Strategy(name = "hashBalanceDBSharding", fields = { "staffId" })
+)
+public class StaffInfoVO extends AbstractStaffInfoVO {
+}
+```
+* 进行对象保存操作
+```java
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(classes = SqlToyApplication.class)
+public class CrudCaseServiceTest {
+	@Autowired
+	private SqlToyCRUDService sqlToyCRUDService;
+
+	// 演示对象操作分库分表,当前策略是采用hash取模方式,保存、修改、加载都会根据取模字段值自动匹配对应数据库
+	/**
+	 * 创建一条员工记录
+	 */
+	@Test
+	public void saveStaffInfo() {
+		List<StaffInfoVO> staffs = new ArrayList<StaffInfoVO>();
+		for (int i = 1; i < 10; i++) {
+			StaffInfoVO staffInfo = new StaffInfoVO();
+			staffInfo.setStaffId("S1907150" + i);
+			staffInfo.setStaffCode("S1907150" + i);
+			staffInfo.setStaffName("测试员工" + i);
+			staffInfo.setSexType("M");
+			staffInfo.setEmail("test12@aliyun.com");
+			staffInfo.setEntryDate(LocalDateTime.now());
+			staffInfo.setStatus(1);
+			staffInfo.setOrganId("C0001");
+			staffInfo.setPhoto(
+					ShowCaseUtils.getBytes(ShowCaseUtils.getFileInputStream("classpath:/mock/staff_photo.jpg")));
+			staffInfo.setCountry("86");
+			staffs.add(staffInfo);
+		}
+		sqlToyCRUDService.saveAll(staffs);
+	}
+
+	@Test
+	public void loadAll() {
+		List<StaffInfoVO> staffs = new ArrayList<StaffInfoVO>();
+		for (int i = 1; i < 10; i++) {
+			StaffInfoVO staffInfo = new StaffInfoVO();
+			staffInfo.setStaffId("S1907150" + i);
+			staffs.add(staffInfo);
+		}
+		sqlToyCRUDService.loadAll(staffs);
+	}
+}
+```
