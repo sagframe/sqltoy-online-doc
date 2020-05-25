@@ -141,7 +141,9 @@ public class CrudCaseServiceTest {
 			staffInfo.setCountry("86");
 			staffs.add(staffInfo);
 		}
-		sqlToyCRUDService.saveAll(staffs);
+		// sqlToyCRUDService.saveAll(staffs);
+		// saveOrUpdate 也是可以的
+		sqlToyCRUDService.saveOrUpdateAll(staffs);
 	}
 
 	@Test
@@ -152,7 +154,11 @@ public class CrudCaseServiceTest {
 			staffInfo.setStaffId("S1907150" + i);
 			staffs.add(staffInfo);
 		}
-		sqlToyCRUDService.loadAll(staffs);
+		List<StaffInfoVO> result = sqlToyCRUDService.loadAll(staffs);
+		for (StaffInfoVO staff : result) {
+			System.err.println(JSON.toJSONString(staff));
+		}
+
 	}
 }
 ```
