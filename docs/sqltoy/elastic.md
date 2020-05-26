@@ -1,4 +1,15 @@
-# 配置，请参见:trunk/sqltoy-showcase/src/java/main/resources/spring/spring-sqltoy.xml
+# 1.配置集成，请参见
+* trunk/sqltoy-showcase/src/java/main/resources/spring/spring-sqltoy.xml
+* pom要增加httpclient、elastic-rest-client 依赖
+
+```
+#### elasticsearch config ###########
+es.default.url=http://192.168.56.104:9200
+es.version=7.5.1
+es.username=elastic
+es.password=elastic
+```
+
 ```xml
 <bean id="sqlToyContext" class="org.sagacity.sqltoy.SqlToyContext"
 		init-method="initialize" destroy-method="destroy">
@@ -29,7 +40,7 @@
 </bean>
 ```
 
-# 查询编写，使用eql模式，elastic支持sql和json模式,通过mode=sql 来区分是否使用sql
+# 2.查询编写，使用eql模式，elastic支持sql和json模式,通过mode=sql 来区分是否使用sql
 * 参见:src/java/main/com/sagframe/sqltoy/showcase 目录下的sqltoy-showcase.sql.xml 文件
 * elastic只支持单集合查询
 * 缓存翻译、数据旋转等用法跟普通sql一致
@@ -86,7 +97,7 @@
 </eql>
 ```
 
-# java调用,参见test 目录下的ElasticCaseServiceTest，通过sqlToyLazyDao.elastic()调用
+# 3.java调用,参见test 目录下的ElasticCaseServiceTest，通过sqlToyLazyDao.elastic()调用
 ```java
 	@Autowired
 	private SqlToyLazyDao sqlToyLazyDao;
