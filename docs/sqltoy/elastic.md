@@ -1,4 +1,11 @@
-# 1.配置集成，请参见
+# 1.集成es背景
+* elasticsearch 具有极高的查询效率，十亿级别上百个字段的集合查询基本上在0.2秒(pcie存储+较大内存，2017年背景)
+* 极为适宜大规模流水数据查询，比如客户过往交易记录等
+* 具有极强的横向扩展能力
+* 一般只用于查询，通过logstash或spark、flink等方式将数据ETL到elastic上
+* sqltoy支持es就是利用es的极高的查询效率来弥补关系型数据库大规模查询性能问题，解决当初拉卡拉数据平台日均千万笔(按年存储即30亿以上规模)的交易查询性能(传统关系型数据库各种策略用尽都无法跟es的性能想比)。
+
+# 2.配置集成，请参见
 * trunk/sqltoy-showcase/src/java/main/resources/spring/spring-sqltoy.xml
 * pom要增加httpclient、elastic-rest-client 依赖
 
@@ -40,7 +47,7 @@ es.password=elastic
 </bean>
 ```
 
-# 2.查询编写，使用eql模式，elastic支持sql和json模式,通过mode=sql 来区分是否使用sql
+# 3.查询编写，使用eql模式，elastic支持sql和json模式,通过mode=sql 来区分是否使用sql
 * 参见:src/java/main/com/sagframe/sqltoy/showcase 目录下的sqltoy-showcase.sql.xml 文件
 * elastic只支持单集合查询
 * 缓存翻译、数据旋转等用法跟普通sql一致
@@ -97,7 +104,7 @@ es.password=elastic
 </eql>
 ```
 
-# 3.java调用,参见test 目录下的ElasticCaseServiceTest，通过sqlToyLazyDao.elastic()调用
+# 4.java调用,参见test 目录下的ElasticCaseServiceTest，通过sqlToyLazyDao.elastic()调用
 ```java
 	@Autowired
 	private SqlToyLazyDao sqlToyLazyDao;
