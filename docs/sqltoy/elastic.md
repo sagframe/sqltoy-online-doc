@@ -1,164 +1,150 @@
-# 1.查询分库分表
-* 定义分库分表策略，参见sqltoy-showcase范例下resources/spring/spring-sqltoy-sharding.xml 配置
+# 配置，请参见:trunk/sqltoy-showcase/src/java/main/resources/spring/spring-sqltoy.xml
 ```xml
-<!-- 所有分库分表策略开发者可以自行实现接口进行拓展 -->
-<!-- 按照周期范围进行分表查询 -->
-<bean id="historyTableStrategy"
-	class="org.sagacity.sqltoy.plugins.sharding.impl.DefaultShardingStrategy"
-	init-method="initialize">
-	<!-- 多少天内查询实时表,可以用逗号分隔,如:value="360,35,1" -->
-	<property name="days" value="14" />
-	<property name="dateParams"
-		value="createTime,beginDate,bizDate,beginTime,bizTime" />
-	<!-- 实时表和历史表对照 -->
-	<property name="tableNamesMap">
-		<map>
-			<!-- value可用逗号分隔,跟days对应 ,如:value="a,b,c" -->
-			<entry key="SQLTOY_TRANS_INFO_15D"
-				value="SQLTOY_TRANS_INFO_HIS" />
-		</map>
+<bean id="sqlToyContext" class="org.sagacity.sqltoy.SqlToyContext"
+		init-method="initialize" destroy-method="destroy">
+	<!-- 指定sql.xml 文件的路径实现目录的递归查找，可以用逗号或分号指定多个路径 -->
+	<property name="sqlResourcesDir"
+		value="classpath:com/sagframe/sqltoy/showcase" />
+	<!-- 非必须属性:跨数据库函数自动替换(非必须项),适用于跨数据库软件产品,如mysql开发，oracle部署 -->
+	<property name="functionConverts" value="default" />
+	<property name="unifyFieldsHandler">
+		<bean class="com.sagframe.sqltoy.plugins.SqlToyUnifyFieldsHandler" />
+	</property>
+	<!-- 缓存翻译管理器,非必须属性 -->
+	<property name="translateConfig" value="classpath:sqltoy-translate.xml" />
+	<!-- 非必须属性:集成elasticsearch,可以配置多个地址 -->
+	<property name="elasticEndpoints">
+		<list>
+			<bean class="org.sagacity.sqltoy.config.model.ElasticEndpoint">
+				<constructor-arg value="${es.default.url}" />
+				<constructor-arg value="${es.version}" />
+				<property name="id" value="default" />
+				<!-- 6.3.x+版本支持xpack sql查询 <property name="nativeSql" value="true" /> -->
+				<property name="nativeSql" value="false" />
+				<property name="username" value="${es.username}" />
+				<property name="password" value="${es.password}" />
+			</bean>
+		</list>
 	</property>
 </bean>
-
-<!-- 按照权重进行分库查询分流策略 -->
-<bean id="weightBalanceDBStrategy"
-	class="org.sagacity.sqltoy.plugins.sharding.impl.DefaultShardingStrategy"
-	init-method="initialize">
-	<!-- 不同数据库的分配权重 -->
-	<property name="dataSourceWeight">
-		<map>
-			<entry key="dataSource" value="70" />
-			<entry key="sharding1" value="30" />
-		</map>
-	</property>
-	<!-- 数据库有效性检测时间间隔秒数,小于等于0表示不自动检测数据库 -->
-	<property name="checkSeconds" value="180" />
-</bean>
-
-<!-- 按照hash取模进行分库和分表策略 -->
-<bean id="hashBalanceDBSharding"
-	class="org.sagacity.sqltoy.plugins.sharding.impl.HashShardingStrategy"
-	init-method="initialize">
-	<!-- 根据hash取模分库 -->
-	<property name="dataSourceMap">
-		<map>
-			<entry key="0" value="dataSource" />
-			<entry key="1" value="sharding1" />
-			<entry key="2" value="sharding2" />
-		</map>
-	</property>
-</bean>
-
 ```
-* 查询使用范例,参见sql配置上的sharding-datasource 和sharding-table
+
+# 查询编写，使用eql模式，elastic支持sql和json模式,通过mode=sql 来区分是否使用sql
+* 参见:src/java/main/com/sagframe/sqltoy/showcase 目录下的sqltoy-showcase.sql.xml 文件
+* elastic只支持单集合查询
+* 缓存翻译、数据旋转等用法跟普通sql一致
 ```xml
-<!-- 演示分库 -->
-<sql id="sqltoy_db_sharding_case">
-	<!-- 根据userId进行hash取模决定访问具体的数据库 -->	
-	<sharding-datasource
-		strategy="hashBalanceDBSharding" params="userId" />
+<eql id="es_find_company"
+	fields="company_id,company_name,company_type" mode="sql">
 	<value>
-		<![CDATA[
-		select * from sqltoy_user_log t 
-		-- userId 作为分库关键字段属于必备条件
-		where t.user_id=:userId 
-		#[and t.log_date>=:beginDate]
-		#[and t.log_date<=:endDate]
-		]]>
+	<![CDATA[
+	select * from cc_company_info where company_type='1' limit 10
+	]]>
 	</value>
-</sql>
+</eql>
 
-<!-- 演示分表 -->
-<sql id="sqltoy_15d_table_sharding_case">
-	<!--  分表策略根据日期条件决定实际访问具体的表名 -->	
-	<sharding-table tables="sqltoy_trans_info_15d"
-		strategy="historyTableStrategy" params="beginDate" />
+<eql id="es_find_company_page"
+	fields="company_id,company_name,company_type" mode="sql">
 	<value>
-		<![CDATA[
-		select * from sqltoy_trans_info_15d t 
-		where t.trans_date>=:beginDate
-		#[and t.trans_date<=:endDate]
-		]]>
+	<![CDATA[
+	select * from cc_company_info where company_type='1' 
+	]]>
 	</value>
-</sql>
+</eql>
+
+<eql id="es_find_company_page_count"
+	fields="company_id,company_name,company_type" mode="sql">
+	<value>
+	<![CDATA[
+	select count(1) count from cc_company_info where company_type='1' 
+	]]>
+	</value>
+</eql>
+
+<!-- 基于elasticsearch json rest原生查询,当存在_source 提供了字段时fields属性可以不用填写 -->
+<eql id="sys_elastic_test_json" fields="" index="cc_company_info">
+	<!-- 如果需要依然可以使用translate 缓存翻译,column 对应_source 中定义的字段 -->
+	<!-- <translate cache="" columns=""/> -->
+	<value>
+<![CDATA[
+	{
+		    "_source": [
+			"company_id",
+				"company_name",
+				"company_type"
+		    ], 
+		    "query": {
+			"bool":{
+				"filter":[
+					<#>{"terms":{"company_type":@(:companyTypes)}}</#>
+				]
+			}
+		    }
+		}
+]]>
+</value>
+</eql>
 ```
-# 2.对象操作分库分表
-* 涉及增加、修改、删除操作的分库需要用到分布式事务管理,参见:https://github.com/chenrenfei/sqltoy-showcase/tree/master/trunk/sqltoy-sharding 
-* 使用jta进行事务管理
-* 在对象上进行注解,sharding配置文件参见:src/java/resources/spring-sqltoy-sharding.xml
 
+# java调用,参见test 目录下的ElasticCaseServiceTest，通过sqlToyLazyDao.elastic()调用
 ```java
-package com.sagframe.sqltoy.showcase.vo;
-
-import java.time.LocalDateTime;
-
-import org.sagacity.sqltoy.config.annotation.Sharding;
-import org.sagacity.sqltoy.config.annotation.SqlToyEntity;
-import org.sagacity.sqltoy.config.annotation.Strategy;
-
-import com.sagframe.sqltoy.showcase.vo.base.AbstractStaffInfoVO;
-
-/**
- * @project sqltoy-oracle
- * @author zhongxuchen
- * @version 1.0.0 Table: sqltoy_staff_info,Remark:员工信息表
- */
-@SqlToyEntity
-@Sharding(db = @Strategy(name = "hashBalanceDBSharding", fields = { "staffId" })
-//分表跟分库类似
-//,table = @Strategy(name = "hashBalanceDBSharding", fields = { "staffId" })
-)
-public class StaffInfoVO extends AbstractStaffInfoVO {
-}
-```
-* 进行对象保存操作
-```java
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = SqlToyApplication.class)
-public class CrudCaseServiceTest {
 	@Autowired
-	private SqlToyCRUDService sqlToyCRUDService;
+	private SqlToyLazyDao sqlToyLazyDao;
 
-	// 演示对象操作分库分表,当前策略是采用hash取模方式,保存、修改、加载都会根据取模字段值自动匹配对应数据库
 	/**
-	 * 创建一条员工记录
+	 * 演示普通的查询
 	 */
 	@Test
-	public void saveStaffInfo() {
-		List<StaffInfoVO> staffs = new ArrayList<StaffInfoVO>();
-		for (int i = 1; i < 10; i++) {
-			StaffInfoVO staffInfo = new StaffInfoVO();
-			staffInfo.setStaffId("S1907150" + i);
-			staffInfo.setStaffCode("S1907150" + i);
-			staffInfo.setStaffName("测试员工" + i);
-			staffInfo.setSexType("M");
-			staffInfo.setEmail("test12@aliyun.com");
-			staffInfo.setEntryDate(LocalDateTime.now());
-			staffInfo.setStatus(1);
-			staffInfo.setOrganId("C0001");
-			staffInfo.setPhoto(
-					ShowCaseUtils.getBytes(ShowCaseUtils.getFileInputStream("classpath:/mock/staff_photo.jpg")));
-			staffInfo.setCountry("86");
-			staffs.add(staffInfo);
+	public void testSqlSearch() {
+		// elasticsearch-sql https://github.com/NLPchina/elasticsearch-sql
+		String sql = "es_find_company";
+		List<CompanyInfoVO> result = (List<CompanyInfoVO>) sqlToyLazyDao.elastic().sql(sql)
+				.resultType(CompanyInfoVO.class).find();
+		for (CompanyInfoVO company : result) {
+			System.err.println(JSON.toJSONString(company));
 		}
-		// sqlToyCRUDService.saveAll(staffs);
-		// saveOrUpdate 也是可以的
-		sqlToyCRUDService.saveOrUpdateAll(staffs);
+	}
+
+	/**
+	 * 演示分页查询，基于sql分页请使用elasticsearch-sql插件
+	 */
+	@Test
+	public void testSqlFindPage() {
+		// elasticsearch-sql https://github.com/NLPchina/elasticsearch-sql
+		String sql = "es_find_company_page";
+		PaginationModel pageModel = new PaginationModel();
+		PaginationModel result = (PaginationModel) sqlToyLazyDao.elastic().sql(sql).resultType(CompanyInfoVO.class)
+				.findPage(pageModel);
+		System.err.println("resultCount=" + result.getRecordCount());
+		for (CompanyInfoVO company : (List<CompanyInfoVO>) result.getRows()) {
+			System.err.println(JSON.toJSONString(company));
+		}
 	}
 
 	@Test
-	public void loadAll() {
-		List<StaffInfoVO> staffs = new ArrayList<StaffInfoVO>();
-		for (int i = 1; i < 10; i++) {
-			StaffInfoVO staffInfo = new StaffInfoVO();
-			staffInfo.setStaffId("S1907150" + i);
-			staffs.add(staffInfo);
-		}
-		List<StaffInfoVO> result = sqlToyCRUDService.loadAll(staffs);
-		for (StaffInfoVO staff : result) {
-			System.err.println(JSON.toJSONString(staff));
-		}
+	public void testJsonSearch() {
+		String sql = "sys_elastic_test_json";
+		String[] paramNames = { "companyTypes" };
+		Object[] paramValues = { new Object[] { "1", "2" } };
 
+		List<CompanyInfoVO> result = (List<CompanyInfoVO>) sqlToyLazyDao.elastic().sql(sql).names(paramNames)
+				.values(paramValues).resultType(CompanyInfoVO.class).find();
+		for (CompanyInfoVO company : result) {
+			System.err.println(JSON.toJSONString(company));
+		}
 	}
-}
+
+	@Test
+	public void testJsonFindPage() {
+		String sql = "sys_elastic_test_json";
+		String[] paramNames = { "companyTypes" };
+		Object[] paramValues = { new Object[] { "1", "2" } };
+		PaginationModel pageModel = new PaginationModel();
+		PaginationModel result = (PaginationModel) sqlToyLazyDao.elastic().sql(sql).names(paramNames)
+				.values(paramValues).resultType(CompanyInfoVO.class).findPage(pageModel);
+		System.err.println("resultCount=" + result.getRecordCount());
+		for (CompanyInfoVO company : (List<CompanyInfoVO>) result.getRows()) {
+			System.err.println(JSON.toJSONString(company));
+		}
+	}
 ```
