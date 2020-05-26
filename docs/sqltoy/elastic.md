@@ -9,7 +9,7 @@
 * trunk/sqltoy-showcase/src/java/main/resources/spring/spring-sqltoy.xml
 * pom要增加httpclient、elastic-rest-client 依赖
 
-```
+```xml
 #### elasticsearch config ###########
 es.default.url=http://192.168.56.104:9200
 es.version=7.5.1
@@ -51,6 +51,7 @@ es.password=elastic
 * 参见:src/java/main/com/sagframe/sqltoy/showcase 目录下的sqltoy-showcase.sql.xml 文件
 * elastic只支持单集合查询
 * 缓存翻译、数据旋转等用法跟普通sql一致
+
 ```xml
 <eql id="es_find_company"
 	fields="company_id,company_name,company_type" mode="sql">
@@ -79,17 +80,14 @@ es.password=elastic
 	</value>
 </eql>
 
-<!-- 基于elasticsearch json rest原生查询,当存在_source 提供了字段时fields属性可以不用填写 -->
 <eql id="sys_elastic_test_json" fields="" index="cc_company_info">
-	<!-- 如果需要依然可以使用translate 缓存翻译,column 对应_source 中定义的字段 -->
-	<!-- <translate cache="" columns=""/> -->
-	<value>
+<value>
 <![CDATA[
 	{
 		    "_source": [
 			"company_id",
-				"company_name",
-				"company_type"
+			"company_name",
+			"company_type"
 		    ], 
 		    "query": {
 			"bool":{
@@ -102,6 +100,7 @@ es.password=elastic
 ]]>
 </value>
 </eql>
+
 ```
 
 # 4.java调用,参见test 目录下的ElasticCaseServiceTest，通过sqlToyLazyDao.elastic()调用
