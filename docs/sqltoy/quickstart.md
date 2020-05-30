@@ -7,7 +7,7 @@
 <parent>
 	<groupId>org.springframework.boot</groupId>
 	<artifactId>spring-boot-starter-parent</artifactId>
-	<version>2.2.7.RELEASE</version>
+	<version>2.3.0.RELEASE</version>
 </parent>
 
 <dependencies>
@@ -29,7 +29,7 @@
 	<dependency>
 		<groupId>com.sagframe</groupId>
 		<artifactId>sagacity-sqltoy-starter</artifactId>
-		<version>4.12.3</version>
+		<version>4.12.4</version>
 	</dependency>
         <!-- ehcache 用作缓存翻译 -->
 	<dependency>
