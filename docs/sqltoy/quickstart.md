@@ -121,7 +121,7 @@ spring:
          removeAbandoned: true
          removeAbandonedTimeout: 300
     sqltoy:
-        # 这里要注意，指定sql文件的路径,多个可以用逗号分隔，会自动向下寻找
+        # 这里要注意，指定sql文件的目录(是目录不是具体文件或文件匹配表达式),多个可以用逗号分隔，会自动向下寻找
         sqlResourcesDir: classpath:/com/sagframe/sqltoy/showcase
         # 缓存翻译的配置
         translateConfig: classpath:sqltoy-translate.xml
