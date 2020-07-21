@@ -28,7 +28,11 @@
 		<!-- 将数组转化成in 的参数条件并增加单引号 -->
 		<to-in-arg params="" />
 		<!-- 空白转为null -->
-		<blank params="*" excludes="staffName" />
+		<blank params="*" excludes="staffName" />	
+	      	<!-- 在参数的左边加% ,sqltoy参数里面有%号不做处理，没有%号则默认两边加% -->
+	        <l-like params="staffName"/>
+	      	<!-- 在参数的右边边加% -->
+	        <r-like params="staffName"/>
 		<!-- 参数值在某个区间则转为null -->
 		<between params="" start-value="0" end-value="9999"	excludes="" />
 		<!-- 将前端传过来的字符串切割成数组 -->
