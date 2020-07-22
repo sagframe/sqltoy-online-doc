@@ -21,7 +21,7 @@
 		  first_day:月的第一天;last_day:月的最后一天,first_year_day:年的第一天,last_year_day年的最后一天 -->
 		<to-date params="" format="yyyyMMdd" increment-days="1" />
 		<to-number params="" data-type="decimal" />
-	        <!-- 在参数的左边加% ,sqltoy参数里面有%号不做处理，没有%号则默认两边加% -->
+	        <!-- 在参数的左边加% ,sqltoy默认规则是:参数里面有%符号不做处理，没有%符号则两边加% -->
 	      	<l-like params="staffName"/>
 	        <!-- 在参数的右边边加% -->
 	        <r-like params="staffName"/>
