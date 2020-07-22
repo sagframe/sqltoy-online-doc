@@ -14,12 +14,17 @@
 <sql id="sqltoy_sql_specs">
       <!-- filters 用来对参与查询或执行的参数值进行转化处理 -->
       <filters>
+	        <!-- 最常用的为前2个eq、to-date，注意to-date的用法,比较精妙的是cache-arg、比较细思极恐的是primary  -->		
 		<!-- 参数等于某个值则将参数值设置为null -->
 		<eq params="organType" value="-1" />
 		<!-- 将参数条件值转换为日期格式,format可以是yyyy-MM-dd这种自定义格式也可以是: 
 		  first_day:月的第一天;last_day:月的最后一天,first_year_day:年的第一天,last_year_day年的最后一天 -->
 		<to-date params="" format="yyyyMMdd" increment-days="1" />
 		<to-number params="" data-type="decimal" />
+	        <!-- 在参数的左边加% ,sqltoy参数里面有%号不做处理，没有%号则默认两边加% -->
+	      	<l-like params="staffName"/>
+	        <!-- 在参数的右边边加% -->
+	        <r-like params="staffName"/>
 		<!-- 通过缓存将名称用类似like模式匹配出对应的编码作为条件进行精准查询 -->
 		<cache-arg param="" cache-name="" cache-type="" alias-name="" />
 		<!-- 首要参数，比如页面上精准输入了订单编号，此时除特定条件外其他条件全部设置为null不参与查询
@@ -27,12 +32,9 @@
 		<primary param="orderId" excludes="organIds" />
 		<!-- 将数组转化成in 的参数条件并增加单引号 -->
 		<to-in-arg params="" />
-		<!-- 空白转为null -->
+	      
+		<!-- 空白转为null，一般无需配置，默认就是所有空白自动转为null -->
 	        <blank params="*" excludes="staffName" />
-	      	<!-- 在参数的左边加% ,sqltoy参数里面有%号不做处理，没有%号则默认两边加% -->
-	      	<l-like params="staffName"/>
-	        <!-- 在参数的右边边加% -->
-	        <r-like params="staffName"/>
 		<!-- 参数值在某个区间则转为null -->
 		<between params="" start-value="0" end-value="9999"	excludes="" />
 		<!-- 将前端传过来的字符串切割成数组 -->
