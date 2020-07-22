@@ -30,7 +30,7 @@
 		<!-- 空白转为null -->
 		<blank params="*" excludes="staffName" />	
 	      	<!-- 在参数的左边加% ,sqltoy参数里面有%号不做处理，没有%号则默认两边加% -->
-	        <l-like params="staffName"/>
+	      	<l-like params="staffName"/>
 	      	<!-- 在参数的右边边加% -->
 	        <r-like params="staffName"/>
 		<!-- 参数值在某个区间则转为null -->
