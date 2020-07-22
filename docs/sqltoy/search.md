@@ -1,5 +1,5 @@
 # 1. 为什么是xml?
-* 不想花费篇幅针对这种问题进行阐述，请深入了解sqltoy后自己作出判断!sqltoy开始逐步减少这种没有说教式的阐述，回归简单的开源介绍!
+* 请深入了解sqltoy后自己作出判断!sqltoy开始逐步减少这种说教式的阐述，回归简单的开源介绍!
 
 # 2. sqltoy提倡只写service逻辑部分，dao通过SqlToyLazyDao完成
 # 3. sqltoy的sql完整规范
