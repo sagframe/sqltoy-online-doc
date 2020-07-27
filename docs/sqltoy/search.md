@@ -1,8 +1,5 @@
-# 1. 为什么是xml?
-* 请深入了解sqltoy后自己作出判断!sqltoy开始逐步减少这种说教式的阐述，回归简单的开源介绍!
-
-# 2. sqltoy提倡只写service逻辑部分，dao通过SqlToyLazyDao完成
-# 3. sqltoy的sql完整规范
+# 1. sqltoy提倡只写service逻辑部分，dao通过SqlToyLazyDao完成
+# 2. sqltoy的sql完整规范
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <sqltoy xmlns="http://www.sagframe.com/schema/sqltoy" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
