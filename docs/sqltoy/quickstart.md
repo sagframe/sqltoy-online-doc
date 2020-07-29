@@ -29,7 +29,7 @@
 	<dependency>
 		<groupId>com.sagframe</groupId>
 		<artifactId>sagacity-sqltoy-starter</artifactId>
-		<version>4.13.8</version>
+		<version>4.13.10</version>
 	</dependency>
         <!-- ehcache 用作缓存翻译 -->
 	<dependency>
@@ -41,7 +41,7 @@
 	<dependency>
 		<groupId>com.alibaba</groupId>
 		<artifactId>fastjson</artifactId>
-		<version>1.2.72</version>
+		<version>1.2.73</version>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
