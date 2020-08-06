@@ -1,6 +1,6 @@
-# 请参照trunk下面sqltoy-starter-showcase 演示项目
+# 请参照trunk下面sqltoy-quickstart 演示项目
 
-* 创建一个springboot的maven项目,并建立包路径,如:com.sagframe.sqltoy.showcase
+* 创建一个springboot的maven项目,并建立包路径,如:com.sqltoy.quickstart
 * 修改pom.xml,引入sqltoy boot starter、druid starter、数据库驱动、缓存、junit测试依赖等。
 
 ```xml
@@ -66,7 +66,7 @@
 * 编写springboot main启动程序SqlToyApplication.java
 
 ```java
-package com.sagframe.sqltoy;
+package com.sqltoy;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -122,18 +122,18 @@ spring:
          removeAbandonedTimeout: 300
     sqltoy:
         # 这里要注意，指定sql文件的目录(是目录不是具体文件或文件匹配表达式),多个可以用逗号分隔，会自动向下寻找
-        sqlResourcesDir: classpath:/com/sagframe/sqltoy/showcase
+        sqlResourcesDir: classpath:/com/sqltoy/quickstart
         # 缓存翻译的配置
         translateConfig: classpath:sqltoy-translate.xml
         # debug模式会打印执行sql
         debug: true
         # 提供统一字段:createBy createTime updateBy updateTime 等字段补漏性(为空时)赋值(可选配置)
-        unifyFieldsHandler: com.sagframe.sqltoy.plugins.SqlToyUnifyFieldsHandler
+        unifyFieldsHandler: com.sqltoy.plugins.SqlToyUnifyFieldsHandler
         # sql执行超过多长时间则进行日志输出,用于监控哪些慢sql(可选配置:默认30秒)
         printSqlTimeoutMillis: 300000
 ```
 
-* 编写你的第一个sql,在com/sagframe/sqltoy/showcase创建sqltoy-showcase.sql.xml 必须要以*.sql.xml 结尾,注意sql编写的格式,必须
+* 编写你的第一个sql,在com/sqltoy/quickstart创建sqltoy-quickstart.sql.xml 必须要以*.sql.xml 结尾,注意sql编写的格式,必须
 要符合范例的格式:```<sqltoy><sql id=""><value><![CDATA[]]></value></sql></sqltoy>``` 模式
 
 ```xml
@@ -142,7 +142,7 @@ spring:
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.sagframe.com/schema/sqltoy http://www.sagframe.com/schema/sqltoy/sqltoy.xsd">
 	<!-- 第一个演示sql -->
-	<sql id="sqltoy_query_staffInfo">
+	<sql id="qstart_query_staffInfo">
 		<value>
 			<![CDATA[
 			select * from sqltoy_staff_info t 
@@ -157,7 +157,7 @@ spring:
 * 写一个单元测试类：QueryDemoTest.java 执行单元测试即可打印出结果
 
 ```java
-package com.sagframe.sqltoy.showcase;
+package com.sqltoy.quickstart;
 
 import java.util.List;
 
@@ -170,7 +170,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.alibaba.fastjson.JSON;
-import com.sagframe.sqltoy.SqlToyApplication;
+import com.sqltoy.SqlToyApplication;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = SqlToyApplication.class)
@@ -186,7 +186,7 @@ public class QueryDemoTest {
 		String[] paramNames = { "staffName", "status" };
 		Object[] paramValue = { "陈", 1 };
 		//最后一个参数是返回类型 null 则返回普通数组(可以传VO对象、Map.class)
-		List staffInfo = sqlToyLazyDao.findBySql("sqltoy_query_staffInfo", paramNames, paramValue, null);
+		List staffInfo = sqlToyLazyDao.findBySql("qstart_query_staffInfo", paramNames, paramValue, null);
 		System.out.println(JSON.toJSONString(staffInfo));
 	}
 }
