@@ -99,9 +99,9 @@ spring:
        name: dataSource
        type: com.alibaba.druid.pool.DruidDataSource
        driver-class-name: com.mysql.cj.jdbc.Driver
-       username: sqltoy
-       password: sqltoy
-       url: jdbc:mysql://192.168.56.109:3306/sqltoy?useUnicode=true&serverTimezone=GMT%2B8&useSSL=false
+       username: quickstart
+       password: quickstart
+       url: jdbc:mysql://192.168.56.109:3306/quickstart?useUnicode=true&serverTimezone=GMT%2B8&useSSL=false
        druid:
          initial-size: 5
          min-idle: 5
