@@ -105,8 +105,10 @@ where #[t1.type in (:types)]
       #[and t1.bizDate<=:endDate]
       #[and t1.status=:status #[and t.amt>=:amt]]
 ```
+
 # 常规用法说明
 * 常规sql,上面规范是完整功能罗列别吓着了
+
 ```xml
 <sql id="sqltoy_sql_specs">
 	<!-- filters 用来对参与查询或执行的参数值进行转化处理 -->
@@ -138,8 +140,10 @@ where #[t1.type in (:types)]
 	</value>
 </sql>
 ```
+
 * filter中的eq过滤是最常用的,比如页面上有一个下拉框:sexType,默认选项是:全部(value="-1"),
   也就是sexType传过来值为-1时,就不做sexType条件过滤
+  
 ```html 
 <select name="sexType">
 	<option value="-1">全部</option>
@@ -147,8 +151,10 @@ where #[t1.type in (:types)]
 	<option value="M">女性</option>
 </select>
 ```
+
 # 常用功能简介
 * loadBySql 通过sql查询提取一条记录
+
 ```java
 /**
  * @todo 通过sql获取单条记录
@@ -195,6 +201,7 @@ public void loadBySql() {
 ```
 
 * getSingleValue 根据sql查询获取单一数值
+
 ```java
 /**
  * @TODO 获取查询结果的第一条、第一列的值，例如执行:select max(x) from 等
@@ -206,6 +213,7 @@ public void loadBySql() {
 public Object getSingleValue(final String sqlOrNamedSql, final String[] paramsNamed, final Object[] paramsValue);
 
 ```
+
 * findBySql 通过sql查询返回一个List集合
 
 * findPageBySql 通过sql查询返回一个分页模型(rows\pageNo\pageSize\recordCount\totalPage)
