@@ -156,6 +156,7 @@ where #[t1.type in (:types)]
 * loadBySql 通过sql查询提取一条记录
 
 ```java
+
 /**
  * @todo 通过sql获取单条记录
  * @param sqlOrNamedSql
@@ -167,6 +168,7 @@ where #[t1.type in (:types)]
 public <T> T loadBySql(final String sqlOrNamedSql, final String[] paramsNamed, final Object[] paramsValue,
 		final Class<T> voClass);
 
+
 /**
  * @todo 通过对象实体传参数,框架结合sql中的参数名称来映射对象属性取值
  * @param sqlOrNamedSql
@@ -174,12 +176,11 @@ public <T> T loadBySql(final String sqlOrNamedSql, final String[] paramsNamed, f
  * @return
  */
 public <T extends Serializable> T loadBySql(final String sqlOrNamedSql, final T entity);
-  
-//代码范例
 
-//注入sqlToyLazyDao
+
 @Autowired
 private SqlToyLazyDao sqlToyLazyDao;
+
 /**
  * 根据对象加载数据
  */
@@ -198,11 +199,13 @@ public void loadBySql() {
 			new Object[] { ",100008," }, OrganInfoVO.class);
       System.out.print(JSON.toJSONString(subOrgans));
 }
+
 ```
 
 * getSingleValue 根据sql查询获取单一数值
 
 ```java
+
 /**
  * @TODO 获取查询结果的第一条、第一列的值，例如执行:select max(x) from 等
  * @param sqlOrNamedSql
