@@ -157,42 +157,26 @@ where #[t1.type in (:types)]
 
 ```java
 
-/**
- * @todo 通过sql获取单条记录
- * @param sqlOrNamedSql
- * @param paramsNamed
- * @param paramsValue
- * @param voClass
- * @return
- */
+// 通过sql获取单条记录
 public <T> T loadBySql(final String sqlOrNamedSql, final String[] paramsNamed, final Object[] paramsValue,
 		final Class<T> voClass);
 
 
-/**
- * @todo 通过对象实体传参数,框架结合sql中的参数名称来映射对象属性取值
- * @param sqlOrNamedSql
- * @param entity
- * @return
- */
+// 通过对象实体传参数,框架结合sql中的参数名称来映射对象属性取值
 public <T extends Serializable> T loadBySql(final String sqlOrNamedSql, final T entity);
 
 
 @Autowired
 private SqlToyLazyDao sqlToyLazyDao;
 
-/**
- * 根据对象加载数据
- */
+//根据对象加载数据
 @Test
 public void loadByEntity() {
    OrganInfoVO parentOrgan = sqlToyLazyDao.load(new OrganInfoVO("100008"));
    System.out.print(JSON.toJSONString(parentOrgan));
 }
 
-/**
- * 普通sql加载对象,最后一个参数可以是null(返回二维List)，也可以是HashMap返回List<Map>
- */
+//普通sql加载对象,最后一个参数可以是null(返回二维List)，也可以是HashMap返回List<Map>
 @Test
 public void loadBySql() {
       List<OrganInfoVO> subOrgans = sqlToyLazyDao.findBySql("sqltoy_treeTable_search", new String[] { "nodeRoute" },
@@ -206,13 +190,7 @@ public void loadBySql() {
 
 ```java
 
-/**
- * @TODO 获取查询结果的第一条、第一列的值，例如执行:select max(x) from 等
- * @param sqlOrNamedSql
- * @param paramsNamed
- * @param paramsValue
- * @return
- */
+//获取查询结果的第一条、第一列的值，例如执行:select max(x) from 等
 public Object getSingleValue(final String sqlOrNamedSql, final String[] paramsNamed, final Object[] paramsValue);
 
 ```
