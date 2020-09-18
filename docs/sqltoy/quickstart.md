@@ -29,13 +29,13 @@
 	<dependency>
 		<groupId>com.sagframe</groupId>
 		<artifactId>sagacity-sqltoy-starter</artifactId>
-		<version>4.15.7</version>
+		<version>4.15.7.3</version>
 	</dependency>
         <!-- ehcache 用作缓存翻译 -->
 	<dependency>
 		<groupId>org.ehcache</groupId>
 		<artifactId>ehcache</artifactId>
-		<version>3.8.1</version>
+		<version>3.9.0</version>
 	</dependency>
 	<!--  用于对象输出演示用,实际项目不依赖 -->	
 	<dependency>
