@@ -18,7 +18,7 @@
 	<dependency>
 		<groupId>com.alibaba</groupId>
 		<artifactId>druid-spring-boot-starter</artifactId>
-		<version>1.1.23</version>
+		<version>1.2.1</version>
 	</dependency>
         <!-- mysql 数据库 -->
 	<dependency>
@@ -29,7 +29,7 @@
 	<dependency>
 		<groupId>com.sagframe</groupId>
 		<artifactId>sagacity-sqltoy-starter</artifactId>
-		<version>4.16.1</version>
+		<version>4.16.3</version>
 	</dependency>
         <!-- ehcache 用作缓存翻译 -->
 	<dependency>
@@ -41,7 +41,7 @@
 	<dependency>
 		<groupId>com.alibaba</groupId>
 		<artifactId>fastjson</artifactId>
-		<version>1.2.73</version>
+		<version>1.2.74</version>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
