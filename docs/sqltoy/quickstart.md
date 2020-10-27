@@ -24,12 +24,12 @@
 	<dependency>
 		<groupId>mysql</groupId>
 		<artifactId>mysql-connector-java</artifactId>
-		<version>8.0.21</version>
+		<version>8.0.22</version>
 	</dependency>
 	<dependency>
 		<groupId>com.sagframe</groupId>
 		<artifactId>sagacity-sqltoy-starter</artifactId>
-		<version>4.16.6</version>
+		<version>4.16.7</version>
 	</dependency>
         <!-- ehcache 用作缓存翻译 -->
 	<dependency>
