@@ -95,31 +95,6 @@ public class SqlToyApplication {
 
 ```xml
 spring:
-    datasource:
-       name: dataSource
-       type: com.alibaba.druid.pool.DruidDataSource
-       driver-class-name: com.mysql.cj.jdbc.Driver
-       username: quickstart
-       password: quickstart
-       url: jdbc:mysql://192.168.56.109:3306/quickstart?useUnicode=true&serverTimezone=GMT%2B8&useSSL=false
-       druid:
-         initial-size: 5
-         min-idle: 5
-         maxActive: 20
-         # 配置获取连接等待超时的时间
-         maxWait: 60000
-         numTestsPerEvictionRun: 3
-         keepAlive: true
-         # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
-         timeBetweenEvictionRunsMillis: 120000
-         # 配置一个连接在池中最小生存的时间，单位是毫秒
-         minEvictableIdleTimeMillis: 600000
-         validationQuery: SELECT 1 FROM DUAL
-         testWhileIdle: true
-         testOnBorrow: true
-         testOnReturn: false
-         removeAbandoned: true
-         removeAbandonedTimeout: 300
     sqltoy:
         # 这里要注意，指定sql文件的目录(是目录不是具体文件或文件匹配表达式),多个可以用逗号分隔，会自动向下寻找
         sqlResourcesDir: classpath:/com/sqltoy/quickstart
@@ -128,9 +103,35 @@ spring:
         # debug模式会打印执行sql
         debug: true
         # 提供统一字段:createBy createTime updateBy updateTime 等字段补漏性(为空时)赋值(可选配置)
-        unifyFieldsHandler: com.sqltoy.plugins.SqlToyUnifyFieldsHandler
+        #unifyFieldsHandler: com.sqltoy.plugins.SqlToyUnifyFieldsHandler
         # sql执行超过多长时间则进行日志输出,用于监控哪些慢sql(可选配置:默认30秒)
-        printSqlTimeoutMillis: 300000
+        #printSqlTimeoutMillis: 300000
+    datasource:
+        name: dataSource
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        username: quickstart
+        password: quickstart
+        url: jdbc:mysql://192.168.56.109:3306/quickstart?useUnicode=true&serverTimezone=GMT%2B8&useSSL=false
+        druid:
+           initial-size: 5
+           min-idle: 5
+           maxActive: 20
+           # 配置获取连接等待超时的时间
+           maxWait: 60000
+           numTestsPerEvictionRun: 3
+           keepAlive: true
+           # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+           timeBetweenEvictionRunsMillis: 120000
+           # 配置一个连接在池中最小生存的时间，单位是毫秒
+           minEvictableIdleTimeMillis: 600000
+           validationQuery: SELECT 1 FROM DUAL
+           testWhileIdle: true
+           testOnBorrow: true
+           testOnReturn: false
+           removeAbandoned: true
+           removeAbandonedTimeout: 300
+    
 ```
 
 * 编写你的第一个sql,在com/sqltoy/quickstart创建sqltoy-quickstart.sql.xml 必须要以*.sql.xml 结尾,注意sql编写的格式,必须
