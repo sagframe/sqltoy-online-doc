@@ -102,6 +102,8 @@ spring:
         translateConfig: classpath:sqltoy-translate.xml
         # debug模式会打印执行sql
         debug: true
+		# 跨数据库函数自适配
+		#functionConverts: default
         # 提供统一字段:createBy createTime updateBy updateTime 等字段补漏性(为空时)赋值(可选配置)
         #unifyFieldsHandler: com.sqltoy.plugins.SqlToyUnifyFieldsHandler
         # sql执行超过多长时间则进行日志输出,用于监控哪些慢sql(可选配置:默认30秒)
