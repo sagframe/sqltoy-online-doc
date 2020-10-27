@@ -102,7 +102,7 @@ spring:
         translateConfig: classpath:sqltoy-translate.xml
         # debug模式会打印执行sql
         debug: true
-		# 跨数据库函数自适配
+		# 跨数据库函数自适配,比如:mysql的sql可以自动适用于oracle
 		#functionConverts: default
         # 提供统一字段:createBy createTime updateBy updateTime 等字段补漏性(为空时)赋值(可选配置)
         #unifyFieldsHandler: com.sqltoy.plugins.SqlToyUnifyFieldsHandler
