@@ -52,8 +52,9 @@
 	</business-primary-key>
 	
 	<!-- 主子表的级联关系 update-cascade:delete 表示对存量数据进行删除操作,也可以写成:ENABLED=0(sql片段,置状态为无效) -->
+	<!--orderBy 定义加载子表时的排序方式 -->
 	<cascade>
-		<table name="SQLTOY_DICT_DETAIL" update-cascade="delete" load="STATUS=1" />
+		<table name="SQLTOY_DICT_DETAIL" update-cascade="delete" load="STATUS=1"  orderBy=""/>
 	</cascade>
 
 	<!-- 数据类型对应关系，native-types表示特定数据库返回的字段类型; jdbc-type：表示对应jdbc标准的类型(见:java.sql.Types), 
