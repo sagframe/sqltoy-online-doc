@@ -54,14 +54,19 @@
 	<!-- 主子表的级联关系 update-cascade:delete 表示对存量数据进行删除操作,也可以写成:ENABLED=0(sql片段,置状态为无效) -->
 	<!--orderBy 定义加载子表时的排序方式 -->
 	<cascade>
-		<table name="SQLTOY_DICT_DETAIL" update-cascade="delete" load="STATUS=1"  orderBy=""/>
+		<table name="SQLTOY_DICT_DETAIL" update-cascade="delete" load="STATUS=1" orderBy=""/>
 	</cascade>
 
 	<!-- 数据类型对应关系，native-types表示特定数据库返回的字段类型; jdbc-type：表示对应jdbc标准的类型(见:java.sql.Types), 
-		主要用于vo @Column注解中，设置其类型,方便操作数据库插入或修改时设置类型;java-type:表示对应java对象的属性类型 -->
+		主要用于vo @Column注解中，设置其类型,方便操作数据库插入或修改时设置类型;java-type:表示对应java对象的属性类型 
+		import-types: 可以自行定义需要引入的类型，多个用逗号分隔
+	-->
 	<type-mapping>
 		<!-- 保留1个范例,一般无需配置 -->
 		<sql-type native-types="NUMBER,DECIMAL,NUMERIC"	precision="1..8" scale="0" jdbc-type="INTEGER" java-type="Integer" />
+		<!-- 泛型注意xml转义符号，jdbc-type 可以直接填数字，这里java-type="List<StaffInfoVO>" -->
+		<sql-type native-types="json" jdbc-type="1021"
+			java-type="List&lt;StaffInfoVO&gt;" import-types="com.sqltoy.quickstart.vo.StaffInfoVO"/>
 	</type-mapping>
 </quickvo>
 ```
