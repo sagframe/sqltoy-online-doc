@@ -25,7 +25,7 @@
 	<tasks dist="../../src/main/java" encoding="UTF-8">
 		<!-- include 是基于正则表达式进行表名匹配的 -->	
 		<task active="true" author="zhongxuchen" include="^SQLTOY_\w+" datasource="sqltoy">
-		    <!-- name后面的VO可根据情况设定，也可直接为#{subName} -->
+		    <!-- name后面的VO可根据情况设定，也可直接为#{subName} extends 属性可以指定额外集成的父类 -->
 		    <vo package="${project.package}.showcase.vo" substr="Sqltoy" name="#{subName}VO" />
 		</task>
 	</tasks>
