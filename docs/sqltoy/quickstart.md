@@ -18,7 +18,7 @@
 	<dependency>
 		<groupId>com.alibaba</groupId>
 		<artifactId>druid-spring-boot-starter</artifactId>
-		<version>1.2.3</version>
+		<version>1.2.4</version>
 	</dependency>
         <!-- mysql 数据库 -->
 	<dependency>
@@ -29,7 +29,7 @@
 	<dependency>
 		<groupId>com.sagframe</groupId>
 		<artifactId>sagacity-sqltoy-starter</artifactId>
-		<version>4.17.5</version>
+		<version>4.17.7</version>
 	</dependency>
         <!-- ehcache 用作缓存翻译 -->
 	<dependency>
