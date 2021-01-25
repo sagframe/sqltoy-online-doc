@@ -29,7 +29,7 @@
 	<dependency>
 		<groupId>com.sagframe</groupId>
 		<artifactId>sagacity-sqltoy-starter</artifactId>
-		<version>4.17.12</version>
+		<version>4.17.13</version>
 	</dependency>
         <!-- ehcache 用作缓存翻译 -->
 	<dependency>
