@@ -47,7 +47,7 @@
 		<exclusive param="" compare-type="eq" compare-values=""	set-params="" set-value="" />
 	</filters>
 
-	<!-- 缓存翻译,可以对例如:A,B 这种拼连的进行翻译(要指定分隔符号和最后拼装符号 split-regex="," link-sign=",")
+	<!-- 缓存翻译,可以对例如:A,B 这种拼连的进行翻译(要指定分隔符号和再次拼装符号 split-regex="," link-sign=",")
 	    uncached-template 是针对未能匹配时显示的补充,${value} 表示显示key值,可以key=[${value}未定义这种写法 -->
 	<translate cache="dictCache" cache-type="POST_TYPE" columns="POST_TYPE" cache-indexs="1" uncached-template="" />
 	<!-- 安全掩码:tel\姓名\地址\卡号 -->
