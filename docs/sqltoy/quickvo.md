@@ -38,6 +38,7 @@
     -->
 	<primary-key>
 		<table name="SQLTOY_\w+|SYS_\w+" strategy="generator" generator="default" />
+		<!-- sequence可以写成:SEQ_${tableName} 跟表名有关联，quickvo-4.18.6版本  -->
 		<!--<table name="xxxTABLE" strategy="sequence" sequence="SEQ_XXXX"/> -->
 		<!--<table name="sys_staff_info" strategy="generator" generator="snowflake"/> -->
 		<!--<table name="sys_staff_info" strategy="generator" generator="redis"/>  -->
