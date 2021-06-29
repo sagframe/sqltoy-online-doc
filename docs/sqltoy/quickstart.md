@@ -7,7 +7,7 @@
 <parent>
 	<groupId>org.springframework.boot</groupId>
 	<artifactId>spring-boot-starter-parent</artifactId>
-	<version>2.4.5</version>
+	<version>2.4.8</version>
 </parent>
 
 <dependencies>
@@ -18,24 +18,24 @@
 	<dependency>
 		<groupId>com.alibaba</groupId>
 		<artifactId>druid-spring-boot-starter</artifactId>
-		<version>1.2.5</version>
+		<version>1.2.6</version>
 	</dependency>
         <!-- mysql 数据库 -->
 	<dependency>
 		<groupId>mysql</groupId>
 		<artifactId>mysql-connector-java</artifactId>
-		<version>8.0.23</version>
+		<version>8.0.25</version>
 	</dependency>
 	<dependency>
 		<groupId>com.sagframe</groupId>
 		<artifactId>sagacity-sqltoy-starter</artifactId>
-		<version>4.18.18</version>
+		<version>5.0.0</version>
 	</dependency>
         <!-- ehcache 用作缓存翻译 -->
 	<dependency>
 		<groupId>org.ehcache</groupId>
 		<artifactId>ehcache</artifactId>
-		<version>3.9.3</version>
+		<version>3.9.4</version>
 	</dependency>
 	<!--  用于对象输出演示用,实际项目不依赖 -->	
 	<dependency>
@@ -124,7 +124,7 @@ spring:
            numTestsPerEvictionRun: 3
            keepAlive: true
            # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
-           timeBetweenEvictionRunsMillis: 120000
+           timeBetweenEvictionRunsMillis: 100000
            # 配置一个连接在池中最小生存的时间，单位是毫秒
            minEvictableIdleTimeMillis: 600000
            validationQuery: SELECT 1 FROM DUAL
