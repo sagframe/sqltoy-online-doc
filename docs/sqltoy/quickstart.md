@@ -7,7 +7,7 @@
 <parent>
 	<groupId>org.springframework.boot</groupId>
 	<artifactId>spring-boot-starter-parent</artifactId>
-	<version>2.5.5</version>
+	<version>2.5.6</version>
 </parent>
 
 <dependencies>
@@ -18,13 +18,13 @@
 	<dependency>
 		<groupId>com.alibaba</groupId>
 		<artifactId>druid-spring-boot-starter</artifactId>
-		<version>1.2.6</version>
+		<version>1.2.8</version>
 	</dependency>
         <!-- mysql 数据库 -->
 	<dependency>
 		<groupId>mysql</groupId>
 		<artifactId>mysql-connector-java</artifactId>
-		<version>8.0.26</version>
+		<version>8.0.27</version>
 	</dependency>
 	<dependency>
 		<groupId>com.sagframe</groupId>
