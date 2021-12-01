@@ -86,8 +86,8 @@
 		<global sum-label="" label-column="" />
 		<group sum-label="" label-column="" group-column="" />
 	</summary>
-	<!-- 拼接某列,mysql中等同于group_concat\oracle 中的WMSYS.WM_CONCAT功能,id-column表示以哪列值为分组(单个列即可) -->
-	<link id-column="" sign="," column="" distinct="true"/>
+	<!-- 拼接某列,mysql中等同于group_concat\oracle 中的WMSYS.WM_CONCAT功能,id-columns表示以哪列值为分组(可以多列) -->
+	<link id-columns="" sign="," column="" distinct="true"/>
 	<!-- 行转列 (跟unpivot互斥) -->
 	<pivot category-columns="" group-columns="" start-column=""	end-column="" default-value="0" />
 	<!-- 列转行 -->
