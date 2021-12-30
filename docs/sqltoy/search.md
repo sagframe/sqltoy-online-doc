@@ -26,7 +26,8 @@
 		<primary param="orderId" excludes="organIds" />
 		<!-- 将数组转化成in 的参数条件并增加单引号 -->
 		<to-in-arg params="" />
-	      
+	      	<!-- 将日期格式化字符串，可以结合to-number 实现将日期转换为数字，如月份202112 -->
+	      	<date-format params="" format=""/>	
 		<!-- 空白转为null，一般无需配置，默认就是所有空白自动转为null -->
 	        <blank params="*" excludes="staffName" />
 		<!-- 参数值在某个区间则转为null -->
