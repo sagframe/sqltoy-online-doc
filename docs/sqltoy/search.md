@@ -14,6 +14,8 @@
 		<!-- 将参数条件值转换为日期格式,format可以是yyyy-MM-dd这种自定义格式也可以是: 
 		  first_day:月的第一天;last_day:月的最后一天,first_year_day:年的第一天,last_year_day年的最后一天,increment-time 加减时间，increment-unit默认为days -->
 		<to-date params="" format="yyyyMMdd" increment-time="1" increment-unit="days"/>
+	      	<!-- 场景:前端只有单日期条件时，构造一个endDate形成日期范围过滤,一般和to-data(利用increment-time 加一天) 功能结合使用 -->
+	      	<clone param="beginDate" as-param="endDate"/>
 		<to-number params="" data-type="decimal" />
 	        <!-- 在参数的左边加% ,sqltoy默认规则是:参数里面有%符号不做处理，没有%符号则两边加% -->
 	      	<l-like params="staffName"/>
