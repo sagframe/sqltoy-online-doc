@@ -85,7 +85,7 @@
 	 一般不需要额外定义countsql,除极为苛刻的性能优化，sqltoy提供了极度优化的口子) -->
 	<count-sql><![CDATA[]]></count-sql>
 	<!-- 汇总和求平均 -->
-	<summary columns="" radix-size="2" reverse="false" sum-site="left">
+	<summary sum-columns="" average-columns="" average-radix-sizes="2" reverse="false" sum-site="left" average-skip-null="false">
 		<global sum-label="" label-column="" />
 		<group sum-label="" label-column="" group-column="" />
 	</summary>
