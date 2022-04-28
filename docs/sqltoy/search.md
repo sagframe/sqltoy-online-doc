@@ -48,6 +48,9 @@
 		<replace params="" regex="" value="" is-first="false" />
 		<!-- 排他性参数,当某个参数是xxx值时,将其他参数设置为特定值 -->
 		<exclusive param="" compare-type="eq" compare-values=""	set-params="" set-value="" />
+	        <!-- 自定义实现方式的条件参数处理器，实现类通过:spring.sqltoy.customFilterHandler
+                   (实现接口:org.sagacity.sqltoy.plugins.FilterHandler)进行设置，一般用于处理一些枚举类型等 -->
+	        <custom-handler params="" type=""/>	
 	</filters>
 
 	<!-- 缓存翻译,可以对例如:A,B 这种拼连的进行翻译(要指定分隔符号和再次拼装符号 split-regex="," link-sign=",")
