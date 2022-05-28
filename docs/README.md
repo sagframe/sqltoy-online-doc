@@ -156,7 +156,7 @@ S0001|C10001|101|2020-03-10|10|3000|30000|02|1001|N002
 		]]>
 	</value>
 	<!-- reverse 是否反向 -->	
-	<summary columns="sale_count,sale_quantity,total_amt" reverse="true">
+	<summary sum-columns="sale_count,sale_quantity,total_amt" reverse="true">
 		<!-- 层级顺序保持从高到低 -->
 		<global sum-label="总计" label-column="fruit_name" />
 		<group group-column="fruit_name" sum-label="小计" label-column="fruit_name" />
