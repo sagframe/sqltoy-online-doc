@@ -18,7 +18,7 @@
 	<dependency>
 		<groupId>com.alibaba</groupId>
 		<artifactId>druid-spring-boot-starter</artifactId>
-		<version>1.2.9</version>
+		<version>1.2.11</version>
 	</dependency>
         <!-- mysql 数据库 -->
 	<dependency>
@@ -29,7 +29,7 @@
 	<dependency>
 		<groupId>com.sagframe</groupId>
 		<artifactId>sagacity-sqltoy-starter</artifactId>
-		<version>5.1.46</version>
+		<version>5.2.1</version>
 	</dependency>
         <!-- ehcache 用作缓存翻译 -->
 	<dependency>
@@ -102,8 +102,8 @@ spring:
         translateConfig: classpath:sqltoy-translate.xml
         # debug模式会打印执行sql
         debug: true
-		# 跨数据库函数自适配,比如:mysql的sql可以自动适用于oracle
-		#functionConverts: default
+	# 跨数据库函数自适配,比如:mysql的sql可以自动适用于oracle
+	#functionConverts: default
         # 提供统一字段:createBy createTime updateBy updateTime 等字段补漏性(为空时)赋值(可选配置)
         #unifyFieldsHandler: com.sqltoy.plugins.SqlToyUnifyFieldsHandler
         # sql执行超过多长时间则进行日志输出,用于监控哪些慢sql(可选配置:默认30秒)
