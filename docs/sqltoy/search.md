@@ -9,49 +9,49 @@
       <!-- filters 用来对参与查询或执行的参数值进行转化处理 -->
       <filters>
 	    <!-- 最常用的为前2个eq、to-date，注意to-date的用法,比较精妙的是cache-arg、比较细思极恐的是primary  -->		
-		<!-- 参数等于某个值则将参数值设置为null -->
-		<eq params="organType" value="-1" />
-		<!-- 将参数条件值转换为日期格式,format可以是yyyy-MM-dd这种自定义格式也可以是: 
-		  first_day:月的第一天;last_day:月的最后一天,first_year_day:年的第一天,last_year_day年的最后一天,increment-time 加减时间，increment-unit默认为days -->
-		<to-date params="" format="yyyyMMdd" increment-time="1" increment-unit="days"/>
-	      	<!-- 场景:前端只有单日期条件时，构造一个endDate形成日期范围过滤,一般和to-data(利用increment-time 加一天) 功能结合使用 -->
-	      	<clone param="beginDate" as-param="endDate"/>
-		<to-number params="" data-type="decimal" />
+	    <!-- 参数等于某个值则将参数值设置为null -->
+	    <eq params="organType" value="-1" />
+	    <!-- 将参数条件值转换为日期格式,format可以是yyyy-MM-dd这种自定义格式也可以是: 
+	        first_day:月的第一天;last_day:月的最后一天,first_year_day:年的第一天,last_year_day年的最后一天,increment-time 加减时间，increment-unit默认为days -->
+	    <to-date params="" format="yyyyMMdd" increment-time="1" increment-unit="days"/>
+	    <!-- 场景:前端只有单日期条件时，构造一个endDate形成日期范围过滤,一般和to-data(利用increment-time 加一天) 功能结合使用 -->
+	    <clone param="beginDate" as-param="endDate"/>
+	    <to-number params="" data-type="decimal" />
 	    <!-- 在参数的左边加% ,sqltoy默认规则是:参数里面有%符号不做处理，没有%符号则两边加% -->
 	    <l-like params="staffName"/>
 	    <!-- 在参数的右边边加% -->
 	    <r-like params="staffName"/>
-		<!-- 通过缓存将名称用类似like模式匹配出对应的编码作为条件进行精准查询 -->
-		<cache-arg param="" cache-name="" cache-type="" alias-name="">
-			<!-- 对缓存进行过滤，比如个人授权的机构、状态为生效的缓存数据等 -->
-			<!-- compare-param: 可以是一个参数的属性名称也可以是具体的值，cache-index对应缓存数据的第几列 -->
-			<filter compare-param="1" cache-index="4"/>
-		</cache-arg>
-		<!-- 首要参数，比如页面上精准输入了订单编号，此时除特定条件外其他条件全部设置为null不参与查询
+	    <!-- 通过缓存将名称用类似like模式匹配出对应的编码作为条件进行精准查询 -->
+	    <cache-arg param="" cache-name="" cache-type="" alias-name="">
+		<!-- 对缓存进行过滤，比如个人授权的机构、状态为生效的缓存数据等 -->
+		<!-- compare-param: 可以是一个参数的属性名称也可以是具体的值，cache-index对应缓存数据的第几列 -->
+		<filter compare-param="1" cache-index="4"/>
+	    </cache-arg>
+	    <!-- 首要参数，比如页面上精准输入了订单编号，此时除特定条件外其他条件全部设置为null不参与查询
 		     特定的比如:授权访问机构(避免越权访问)             -->
-		<primary param="orderId" excludes="organIds" />
-		<!-- 将数组转化成in 的参数条件并增加单引号 -->
-		<to-in-arg params="" />
+	    <primary param="orderId" excludes="organIds" />
+	    <!-- 将数组转化成in 的参数条件并增加单引号 -->
+	    <to-in-arg params="" />
 	    <!-- 将日期格式化字符串，可以结合to-number 实现将日期转换为数字，如月份202112 -->
 	    <date-format params="" format=""/>	
-		<!-- 空白转为null，一般无需配置，默认就是所有空白自动转为null -->
+	    <!-- 空白转为null，一般无需配置，默认就是所有空白自动转为null -->
 	    <blank params="*" excludes="staffName" />
-		<!-- 参数值在某个区间则转为null -->
-		<between params="" start-value="0" end-value="9999"	excludes="" />
-		<!-- 将前端传过来的字符串切割成数组 -->
-		<split params="staffAuthOrgs" data-type="string" split-sign="," />
-		<!-- 参数小于等于某个值时转为null -->
-		<lte params="" value="" />
-		<!-- 参数小于某个值时转为null -->
-		<lt params="" value="" />
-		<!-- 参数大于等于某个值时转为null -->
-		<gte params="" value="" />
-		<!-- 参数大于某个值时转为null -->
-		<gt params="" value="" />
-		<!-- 字符替换,默认根据正则表达进行全部替换，is-first为true时只替换首个 -->
-		<replace params="" regex="" value="" is-first="false" />
-		<!-- 排他性参数,当某个参数是xxx值时,将其他参数设置为特定值 -->
-		<exclusive param="" compare-type="eq" compare-values=""	set-params="" set-value="" />
+	    <!-- 参数值在某个区间则转为null -->
+	    <between params="" start-value="0" end-value="9999"	excludes="" />
+	    <!-- 将前端传过来的字符串切割成数组 -->
+	    <split params="staffAuthOrgs" data-type="string" split-sign="," />
+	    <!-- 参数小于等于某个值时转为null -->
+	    <lte params="" value="" />
+	    <!-- 参数小于某个值时转为null -->
+	    <lt params="" value="" />
+	    <!-- 参数大于等于某个值时转为null -->
+	    <gte params="" value="" />
+	    <!-- 参数大于某个值时转为null -->
+	    <gt params="" value="" />
+	    <!-- 字符替换,默认根据正则表达进行全部替换，is-first为true时只替换首个 -->
+	    <replace params="" regex="" value="" is-first="false" />
+	    <!-- 排他性参数,当某个参数是xxx值时,将其他参数设置为特定值 -->
+	    <exclusive param="" compare-type="eq" compare-values=""	set-params="" set-value="" />
 	    <!-- 自定义实现方式的条件参数处理器，实现类通过:spring.sqltoy.customFilterHandler
                    (实现接口:org.sagacity.sqltoy.plugins.FilterHandler)进行设置，一般用于处理一些枚举类型等 -->
 	    <custom-handler params="" type=""/>	
