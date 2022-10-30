@@ -102,6 +102,8 @@
 	<pivot category-columns="" group-columns="" start-column=""	end-column="" default-value="0" />
 	<!-- 列转行 -->
 	<unpivot columns-to-rows="1:xxx,2:xxxx" new-columns-labels="" />
+	<!-- 进行树结构层级排序 -->
+	<tree-sort id-column="organ_id" pid-column="organ_pid"/>
      </sql>
 </sqltoy>
 ```
