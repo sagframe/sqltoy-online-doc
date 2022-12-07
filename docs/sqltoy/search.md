@@ -74,6 +74,11 @@
 	<date-format columns="" format="yyyy-MM-dd HH:mm:ss" />
 	<!-- 数字格式：包括:#,###.00(可自定义)、captial(数字转中文大写)、capital-rmb(大写金额),财务单据上经常要用到 -->
 	<number-format columns="" format="capital-rmb" />
+	<!-- 树型结构数据排序、汇总计算 -->
+	<tree-sort id-column="organ_id" pid-column="organ_pid"	sum-columns="staff_cnt" >
+	     <!-- 状态为0的不参与汇总计算 -->
+	    <sum-filter column="status"  compare-type="neq" compare-values="0"/>
+	</tree-sort>
 	<value>
 	<![CDATA[
 	-- sql 中是可以直接写注释的
