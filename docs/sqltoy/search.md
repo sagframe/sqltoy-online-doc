@@ -22,7 +22,7 @@
 	    <!-- 在参数的右边边加% -->
 	    <r-like params="staffName"/>
 	    <!-- 通过缓存将名称用类似like模式匹配出对应的编码作为条件进行精准查询 -->
-	    <cache-arg param="" cache-name="" cache-type="" alias-name="">
+	    <cache-arg param="" cache-name="" cache-type="" alias-name="" prior-match-equal="">
 		<!-- 对缓存进行过滤，比如个人授权的机构、状态为生效的缓存数据等 -->
 		<!-- compare-param: 可以是一个参数的属性名称也可以是具体的值，cache-index对应缓存数据的第几列 -->
 		<filter compare-param="1" cache-index="4"/>
