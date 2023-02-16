@@ -7,7 +7,7 @@
 <parent>
 	<groupId>org.springframework.boot</groupId>
 	<artifactId>spring-boot-starter-parent</artifactId>
-	<version>2.7.6</version>
+	<version>2.7.8</version>
 </parent>
 
 <dependencies>
@@ -24,12 +24,12 @@
 	<dependency>
 		<groupId>com.mysql</groupId>
 		<artifactId>mysql-connector-j</artifactId>
-		<version>8.0.31</version>
+		<version>8.0.32</version>
 	</dependency>
 	<dependency>
 		<groupId>com.sagframe</groupId>
 		<artifactId>sagacity-sqltoy-starter</artifactId>
-		<version>5.2.25</version>
+		<version>5.2.34</version>
 	</dependency>
         <!-- ehcache 用作缓存翻译 -->
 	<dependency>
@@ -41,7 +41,7 @@
 	<dependency>
 		<groupId>com.alibaba</groupId>
 		<artifactId>fastjson</artifactId>
-		<version>2.0.20</version>
+		<version>2.0.23</version>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
