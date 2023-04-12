@@ -4,7 +4,7 @@
 
 # QQ技术交流群:531812227
 
-# 详细文档见:sagacity-sqltoy/docs/睿智平台SqlToy5.1使用手册.doc
+# 详细文档见:sagacity-sqltoy/docs/睿智平台SqlToy5.2使用手册.doc
 
 # 1. 感受sqltoy之美--缓存翻译、缓存条件检索
 
