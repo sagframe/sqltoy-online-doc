@@ -17,8 +17,8 @@
 	    <!-- 场景:前端只有单日期条件时，构造一个endDate形成日期范围过滤,一般和to-data(利用increment-time 加一天) 功能结合使用 -->
 	    <clone param="beginDate" as-param="endDate"/>
 	    <to-number params="" data-type="decimal" />
-	    <!-- 将参数转为字符串,add-single-quote 默认为false -->
-	    <to-string params="" add-single-quote="true" />
+	    <!-- 将参数转为字符串,add-quote:none，single，double -->
+	    <to-string params="" add-quote="single" />
 	    <!-- 在参数的左边加% ,sqltoy默认规则是:参数里面有%符号不做处理，没有%符号则两边加% -->
 	    <l-like params="staffName"/>
 	    <!-- 在参数的右边边加% -->
