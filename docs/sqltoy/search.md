@@ -52,6 +52,9 @@
 	    <gt params="" value="" />
 	    <!-- 字符替换,默认根据正则表达进行全部替换，is-first为true时只替换首个 -->
 	    <replace params="" regex="" value="" is-first="false" />
+	    <!--设置参数默认值:sysdate()-1d(d:天，h:小时,w:周;m:月,y:年);
+                    first_of_month-3d/first_of_year/first_of_week/last_of_month/last_of_week/last_of_year  -->
+	    <default params="beginDate" data-type="localDate" value="sysdate()-1d" />
 	    <!-- 排他性参数,当某个参数是xxx值时,将其他参数设置为特定值 -->
 	    <exclusive param="" compare-type="eq" compare-values=""	set-params="" set-value="" />
 	    <!-- 自定义实现方式的条件参数处理器，实现类通过:spring.sqltoy.customFilterHandler
