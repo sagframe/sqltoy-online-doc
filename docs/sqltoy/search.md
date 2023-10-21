@@ -1,11 +1,14 @@
-# 1. sqltoy提倡只写service逻辑部分，dao通过SqlToyLazyDao完成
+# 1. sqltoy提倡只写service逻辑部分，dao通过LightDao完成
 # 2. sqltoy的sql完整规范
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <sqltoy xmlns="http://www.sagframe.com/schema/sqltoy" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.sagframe.com/schema/sqltoy http://www.sagframe.com/schema/sqltoy/sqltoy.xsd">
-<!-- id 命名建议遵循: moduleName+functionName 模式,避免不同模块之间重复-->	
-<sql id="sqltoy_sql_specs">
+<!-- id 命名建议遵循: moduleName+functionName 模式,避免不同模块之间重复,
+     debug:表示是否开启sql日志输出(默认依据sqltoy全局的debug值)
+     blank-to-null:空字符是否转null，默认true,在filters中只要出现<blank params="xxx" />就自动关闭了默认
+-->	
+<sql id="sqltoy_sql_specs" debug="false" blank-to-null="true">
       <!-- filters 用来对参与查询或执行的参数值进行转化处理 -->
       <filters>
 	    <!-- 最常用的为前2个eq、to-date，注意to-date的用法,比较精妙的是cache-arg、比较细思极恐的是primary  -->		
