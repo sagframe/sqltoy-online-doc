@@ -182,12 +182,11 @@ where #[t1.type in (:types)]
 ```java
 
 // 通过sql获取单条记录
-public <T> T loadBySql(final String sqlOrNamedSql, final String[] paramsNamed, final Object[] paramsValue,
-		final Class<T> voClass);
+public <T> T findOne(final String sqlOrSqlId, final Map<String, Object> paramsMap, final Class<T> resultType);
 
 
 // 通过对象实体传参数,框架结合sql中的参数名称来映射对象属性取值
-public <T extends Serializable> T loadBySql(final String sqlOrNamedSql, final T entity);
+public <T> T findOne(final String sqlOrSqlId, final Serializable entity, final Class<T> resultType);
 
 
 @Autowired
