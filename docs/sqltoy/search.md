@@ -191,39 +191,38 @@ public <T extends Serializable> T loadBySql(final String sqlOrNamedSql, final T 
 
 
 @Autowired
-private SqlToyLazyDao sqlToyLazyDao;
+private LightDao lightDao;
 
 //根据对象加载数据
 @Test
 public void loadByEntity() {
-   OrganInfoVO parentOrgan = sqlToyLazyDao.load(new OrganInfoVO("100008"));
+   OrganInfoVO parentOrgan = lightDao.load(new OrganInfoVO("100008"));
    System.out.print(JSON.toJSONString(parentOrgan));
 }
 
 //普通sql加载对象,最后一个参数可以是null(返回二维List)，也可以是HashMap返回List<Map>
 @Test
 public void loadBySql() {
-      List<OrganInfoVO> subOrgans = sqlToyLazyDao.findBySql("sqltoy_treeTable_search", new String[] { "nodeRoute" },
-			new Object[] { ",100008," }, OrganInfoVO.class);
+      List<OrganInfoVO> subOrgans = lightDao.find("sqltoy_treeTable_search", MapKit.map( "nodeRoute", ",100008,"), OrganInfoVO.class);
       System.out.print(JSON.toJSONString(subOrgans));
 }
 
 ```
 
-* getSingleValue 根据sql查询获取单一数值
+* getValue 根据sql查询获取单一数值
 
 ```java
 
 //获取查询结果的第一条、第一列的值，例如执行:select max(x) from 等
-public Object getSingleValue(final String sqlOrNamedSql, final String[] paramsNamed, final Object[] paramsValue);
+public <T> T getValue(final String sqlOrSqlId, final Map<String, Object> paramsMap, final Class<T> resultType);
 
 ```
 
-* findBySql 通过sql查询返回一个List集合
+* find 通过sql查询返回一个List集合
 
-* findPageBySql 通过sql查询返回一个分页模型(rows\pageNo\pageSize\recordCount\totalPage)
-* findTopBySql 通过topSize返回前多少条记录，topSize>1 则取固定记录，topSize<1 则按比例提取记录
-* getRandomResult 通过randomSize 提取随机记录
+* findPage 通过sql查询返回一个分页模型(rows\pageNo\pageSize\recordCount\totalPage)
+* findTop 通过topSize返回前多少条记录，topSize>1 则取固定记录，topSize<1 则按比例提取记录
+* findRandom 通过randomSize 提取随机记录
 * getCount 获取查询结果的总记录数量
 * isUnique 查询当前表中指定的值是否唯一
 * updateFetch 查询记录并锁定再通过反调修改数据库的值，并返回修改后的结果,一次交互完成查询修改操作，场景用于:秒杀、库存台账、资金台账这种事务性极强的环节
