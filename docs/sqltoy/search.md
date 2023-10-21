@@ -6,7 +6,7 @@
 	xsi:schemaLocation="http://www.sagframe.com/schema/sqltoy http://www.sagframe.com/schema/sqltoy/sqltoy.xsd">
 <!-- id 命名建议遵循: moduleName+functionName 模式,避免不同模块之间重复,
      debug:表示是否开启sql日志输出(默认依据sqltoy全局的debug值)
-     blank-to-null:空字符是否转null，默认true,在filters中只要出现<blank params="xxx" />就自动关闭了默认
+     blank-to-null:空字符是否转null，默认true,在filters中只要出现<blank params="xx参数" />设置具体参数空白转null就自动关闭了默认
 -->	
 <sql id="sqltoy_sql_specs" debug="false" blank-to-null="true">
       <!-- filters 用来对参与查询或执行的参数值进行转化处理 -->
