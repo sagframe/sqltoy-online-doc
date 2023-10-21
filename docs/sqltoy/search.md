@@ -79,8 +79,8 @@
 	<date-format columns="" format="yyyy-MM-dd HH:mm:ss" />
 	<!-- 数字格式：包括:#,###.00(可自定义)、captial(数字转中文大写)、capital-rmb(大写金额),财务单据上经常要用到 -->
 	<number-format columns="" format="capital-rmb" />
-	<!-- 树型结构数据排序、汇总计算 -->
-	<tree-sort id-column="organ_id" pid-column="organ_pid"	sum-columns="staff_cnt" >
+	<!-- 树型结构数据排序、层级内部排序、汇总计算 -->
+	<tree-sort id-column="organ_id" pid-column="organ_pid"	sum-columns="staff_cnt" level-order-column="staff_cnt" >
 	     <!-- 状态为0的不参与汇总计算 -->
 	    <sum-filter column="status"  compare-type="neq" compare-values="0"/>
 	</tree-sort>
@@ -104,7 +104,8 @@
 	<!-- 汇总和求平均 -->
 	<summary sum-columns="" average-columns="" average-radix-sizes="2" reverse="false" sum-site="left" average-skip-null="false">
 		<global sum-label="" label-column="" />
-		<group sum-label="" label-column="" group-column="" />
+		 <!-- order-column: 分组排序列，order-with-sum:默认为true，order-way:desc/asc -->
+		<group sum-label="" label-column="" group-column="" order-column=""/>
 	</summary>
 	<!-- 拼接某列,mysql中等同于group_concat\oracle 中的WMSYS.WM_CONCAT功能,id-columns表示以哪列值为分组(可以多列) -->
 	<link id-columns="" sign="," column="" distinct="true"/>
@@ -112,8 +113,6 @@
 	<pivot category-columns="" group-columns="" start-column=""	end-column="" default-value="0" />
 	<!-- 列转行 -->
 	<unpivot columns-to-rows="1:xxx,2:xxxx" new-columns-labels="" />
-	<!-- 进行树结构层级排序 -->
-	<tree-sort id-column="organ_id" pid-column="organ_pid"/>
      </sql>
 </sqltoy>
 ```
