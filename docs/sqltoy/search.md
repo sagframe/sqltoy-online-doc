@@ -1,11 +1,14 @@
-# 1. sqltoy提倡只写service逻辑部分，dao通过SqlToyLazyDao完成
+# 1. sqltoy提倡只写service逻辑部分，dao通过LightDao完成
 # 2. sqltoy的sql完整规范
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <sqltoy xmlns="http://www.sagframe.com/schema/sqltoy" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.sagframe.com/schema/sqltoy http://www.sagframe.com/schema/sqltoy/sqltoy.xsd">
-<!-- id 命名建议遵循: moduleName+functionName 模式,避免不同模块之间重复-->	
-<sql id="sqltoy_sql_specs">
+<!-- id 命名建议遵循: moduleName+functionName 模式,避免不同模块之间重复,
+     debug:表示是否开启sql日志输出(默认依据sqltoy全局的debug值)
+     blank-to-null:空字符是否转null，默认true,在filters中只要出现<blank params="xx参数" />设置具体参数空白转null就自动关闭了默认
+-->	
+<sql id="sqltoy_sql_specs" debug="false" blank-to-null="true">
       <!-- filters 用来对参与查询或执行的参数值进行转化处理 -->
       <filters>
 	    <!-- 最常用的为前2个eq、to-date，注意to-date的用法,比较精妙的是cache-arg、比较细思极恐的是primary  -->		
@@ -17,12 +20,14 @@
 	    <!-- 场景:前端只有单日期条件时，构造一个endDate形成日期范围过滤,一般和to-data(利用increment-time 加一天) 功能结合使用 -->
 	    <clone param="beginDate" as-param="endDate"/>
 	    <to-number params="" data-type="decimal" />
+	    <!-- 将参数转为字符串,add-quote:none，single，double -->
+	    <to-string params="" add-quote="single" />
 	    <!-- 在参数的左边加% ,sqltoy默认规则是:参数里面有%符号不做处理，没有%符号则两边加% -->
 	    <l-like params="staffName"/>
 	    <!-- 在参数的右边边加% -->
 	    <r-like params="staffName"/>
 	    <!-- 通过缓存将名称用类似like模式匹配出对应的编码作为条件进行精准查询 -->
-	    <cache-arg param="" cache-name="" cache-type="" alias-name="">
+	    <cache-arg param="" cache-name="" cache-type="" alias-name="" prior-match-equal="">
 		<!-- 对缓存进行过滤，比如个人授权的机构、状态为生效的缓存数据等 -->
 		<!-- compare-param: 可以是一个参数的属性名称也可以是具体的值，cache-index对应缓存数据的第几列 -->
 		<filter compare-param="1" cache-index="4"/>
@@ -50,6 +55,9 @@
 	    <gt params="" value="" />
 	    <!-- 字符替换,默认根据正则表达进行全部替换，is-first为true时只替换首个 -->
 	    <replace params="" regex="" value="" is-first="false" />
+	    <!--设置参数默认值:sysdate()-1d(d:天，h:小时,w:周;m:月,y:年);
+                    first_of_month-3d/first_of_year/first_of_week/last_of_month/last_of_week/last_of_year  -->
+	    <default params="beginDate" data-type="localDate" value="sysdate()-1d" />
 	    <!-- 排他性参数,当某个参数是xxx值时,将其他参数设置为特定值 -->
 	    <exclusive param="" compare-type="eq" compare-values=""	set-params="" set-value="" />
 	    <!-- 自定义实现方式的条件参数处理器，实现类通过:spring.sqltoy.customFilterHandler
@@ -74,8 +82,8 @@
 	<date-format columns="" format="yyyy-MM-dd HH:mm:ss" />
 	<!-- 数字格式：包括:#,###.00(可自定义)、captial(数字转中文大写)、capital-rmb(大写金额),财务单据上经常要用到 -->
 	<number-format columns="" format="capital-rmb" />
-	<!-- 树型结构数据排序、汇总计算 -->
-	<tree-sort id-column="organ_id" pid-column="organ_pid"	sum-columns="staff_cnt" >
+	<!-- 树型结构数据排序、层级内部排序、汇总计算 -->
+	<tree-sort id-column="organ_id" pid-column="organ_pid"	sum-columns="staff_cnt" level-order-column="staff_cnt" >
 	     <!-- 状态为0的不参与汇总计算 -->
 	    <sum-filter column="status"  compare-type="neq" compare-values="0"/>
 	</tree-sort>
@@ -99,7 +107,8 @@
 	<!-- 汇总和求平均 -->
 	<summary sum-columns="" average-columns="" average-radix-sizes="2" reverse="false" sum-site="left" average-skip-null="false">
 		<global sum-label="" label-column="" />
-		<group sum-label="" label-column="" group-column="" />
+		 <!-- order-column: 分组排序列，order-with-sum:默认为true，order-way:desc/asc -->
+		<group sum-label="" label-column="" group-column="" order-column=""/>
 	</summary>
 	<!-- 拼接某列,mysql中等同于group_concat\oracle 中的WMSYS.WM_CONCAT功能,id-columns表示以哪列值为分组(可以多列) -->
 	<link id-columns="" sign="," column="" distinct="true"/>
@@ -107,8 +116,6 @@
 	<pivot category-columns="" group-columns="" start-column=""	end-column="" default-value="0" />
 	<!-- 列转行 -->
 	<unpivot columns-to-rows="1:xxx,2:xxxx" new-columns-labels="" />
-	<!-- 进行树结构层级排序 -->
-	<tree-sort id-column="organ_id" pid-column="organ_pid"/>
      </sql>
 </sqltoy>
 ```
@@ -175,48 +182,46 @@ where #[t1.type in (:types)]
 ```java
 
 // 通过sql获取单条记录
-public <T> T loadBySql(final String sqlOrNamedSql, final String[] paramsNamed, final Object[] paramsValue,
-		final Class<T> voClass);
+public <T> T findOne(final String sqlOrSqlId, final Map<String, Object> paramsMap, final Class<T> resultType);
 
 
 // 通过对象实体传参数,框架结合sql中的参数名称来映射对象属性取值
-public <T extends Serializable> T loadBySql(final String sqlOrNamedSql, final T entity);
+public <T> T findOne(final String sqlOrSqlId, final Serializable entity, final Class<T> resultType);
 
 
 @Autowired
-private SqlToyLazyDao sqlToyLazyDao;
+private LightDao lightDao;
 
 //根据对象加载数据
 @Test
 public void loadByEntity() {
-   OrganInfoVO parentOrgan = sqlToyLazyDao.load(new OrganInfoVO("100008"));
+   OrganInfoVO parentOrgan = lightDao.load(new OrganInfoVO("100008"));
    System.out.print(JSON.toJSONString(parentOrgan));
 }
 
 //普通sql加载对象,最后一个参数可以是null(返回二维List)，也可以是HashMap返回List<Map>
 @Test
 public void loadBySql() {
-      List<OrganInfoVO> subOrgans = sqlToyLazyDao.findBySql("sqltoy_treeTable_search", new String[] { "nodeRoute" },
-			new Object[] { ",100008," }, OrganInfoVO.class);
+      List<OrganInfoVO> subOrgans = lightDao.find("sqltoy_treeTable_search", MapKit.map( "nodeRoute", ",100008,"), OrganInfoVO.class);
       System.out.print(JSON.toJSONString(subOrgans));
 }
 
 ```
 
-* getSingleValue 根据sql查询获取单一数值
+* getValue 根据sql查询获取单一数值
 
 ```java
 
 //获取查询结果的第一条、第一列的值，例如执行:select max(x) from 等
-public Object getSingleValue(final String sqlOrNamedSql, final String[] paramsNamed, final Object[] paramsValue);
+public <T> T getValue(final String sqlOrSqlId, final Map<String, Object> paramsMap, final Class<T> resultType);
 
 ```
 
-* findBySql 通过sql查询返回一个List集合
+* find 通过sql查询返回一个List集合
 
-* findPageBySql 通过sql查询返回一个分页模型(rows\pageNo\pageSize\recordCount\totalPage)
-* findTopBySql 通过topSize返回前多少条记录，topSize>1 则取固定记录，topSize<1 则按比例提取记录
-* getRandomResult 通过randomSize 提取随机记录
+* findPage 通过sql查询返回一个分页模型(rows\pageNo\pageSize\recordCount\totalPage)
+* findTop 通过topSize返回前多少条记录，topSize>1 则取固定记录，topSize<1 则按比例提取记录
+* findRandom 通过randomSize 提取随机记录
 * getCount 获取查询结果的总记录数量
 * isUnique 查询当前表中指定的值是否唯一
 * updateFetch 查询记录并锁定再通过反调修改数据库的值，并返回修改后的结果,一次交互完成查询修改操作，场景用于:秒杀、库存台账、资金台账这种事务性极强的环节
