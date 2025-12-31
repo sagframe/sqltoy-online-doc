@@ -53,6 +53,8 @@
 	    <gte params="" value="" />
 	    <!-- 参数大于某个值时转为null -->
 	    <gt params="" value="" />
+		<!-- 针对数组和集合剔除其中的null或空白 -->
+        <remove-null params="" remove-blank="true"/>
 	    <!-- 字符替换,默认根据正则表达进行全部替换，is-first为true时只替换首个 -->
 	    <replace params="" regex="" value="" is-first="false" />
 	    <!--设置参数默认值:sysdate()-1d(d:天，h:小时,w:周;m:月,y:年);
@@ -71,6 +73,8 @@
 	<!-- 安全掩码:tel\姓名\地址\卡号 -->
 	<!--最简单用法: <secure-mask columns="" type="tel"/> -->
 	<secure-mask columns="" type="name" head-size="3" tail-size="4" mask-code="*****" mask-rate="50" />
+	<!-- 配合加解密，这里提供对自定义查询字段解密 -->
+	<secure-decrypt columns=""/>
 	<!-- 分库策略 -->
 	<sharding-datasource strategy="multiDataBase" />
 	<!-- 分表策略 -->
