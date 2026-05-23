@@ -38,8 +38,6 @@
 	    <primary param="orderId" excludes="organIds" />
 	    <!-- 将数组转化成in 的参数条件并增加单引号 -->
 	    <to-in-arg params="" />
-		<!-- 删除数组或集合中值为null的元素 -->
-		<remove-null parmams=""/>
 	    <!-- 将日期格式化字符串，可以结合to-number 实现将日期转换为数字，如月份202112 -->
 	    <date-format params="" format=""/>	
 	    <!-- 空白转为null，一般无需配置，默认就是所有空白自动转为null -->
