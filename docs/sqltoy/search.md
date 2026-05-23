@@ -7,6 +7,7 @@
 <!-- id 命名建议遵循: moduleName+functionName 模式,避免不同模块之间重复,
      debug:表示是否开启sql日志输出(默认依据sqltoy全局的debug值)
      blank-to-null:空字符是否转null，默认true,在filters中只要出现<blank params="xx参数" />设置具体参数空白转null就自动关闭了默认
+     query-timeout:可针对单个sql设置statement超时时长(单位秒)
 -->	
 <sql id="sqltoy_sql_specs" debug="false" blank-to-null="true">
       <!-- filters 用来对参与查询或执行的参数值进行转化处理 -->
@@ -37,6 +38,8 @@
 	    <primary param="orderId" excludes="organIds" />
 	    <!-- 将数组转化成in 的参数条件并增加单引号 -->
 	    <to-in-arg params="" />
+		<!-- 删除数组或集合中值为null的元素 -->
+		<remove-null parmams=""/>
 	    <!-- 将日期格式化字符串，可以结合to-number 实现将日期转换为数字，如月份202112 -->
 	    <date-format params="" format=""/>	
 	    <!-- 空白转为null，一般无需配置，默认就是所有空白自动转为null -->
