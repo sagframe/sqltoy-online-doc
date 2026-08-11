@@ -23,6 +23,8 @@
 	    <to-number params="" data-type="decimal" />
 	    <!-- 将参数转为字符串,add-quote:none，single，double -->
 	    <to-string params="" add-quote="single" />
+		<!-- 对参与like查询的参数中特殊符号进行转义 -->
+	    <escapeLike params="staffName"/>
 	    <!-- 在参数的左边加% ,sqltoy默认规则是:参数里面有%符号不做处理，没有%符号则两边加% -->
 	    <l-like params="staffName"/>
 	    <!-- 在参数的右边边加% -->
